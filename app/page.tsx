@@ -71,6 +71,22 @@ export default function Home() {
     return schema?.tables.find(table => table.id === id)
   }
 
+  const downloadJson = () => {
+    if (!schema) return
+    
+    const blob = new Blob([JSON.stringify(schema, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    const timestamp = new Date().toISOString().split('T')[0]
+    
+    link.href = url
+    link.download = `basemap-schema-${timestamp}.json`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <main className="max-w-3xl mx-auto py-12 px-4">
       <header className="text-center mb-12">
@@ -174,14 +190,20 @@ export default function Home() {
               </div>
             ))}
 
-            <div className="text-center">
+            <div className="text-center space-x-4">
               <button
                 onClick={() => {
                   navigator.clipboard.writeText(JSON.stringify(schema, null, 2))
                 }}
                 className="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-md transition-colors"
               >
-                Copy Raw JSON
+                Copy JSON
+              </button>
+              <button
+                onClick={downloadJson}
+                className="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-md transition-colors"
+              >
+                Download JSON
               </button>
             </div>
           </div>

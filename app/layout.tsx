@@ -5,7 +5,7 @@ import { Analytics } from "@vercel/analytics/react"
 
 export const metadata: Metadata = {
   title: 'BaseMap - Airtable Schema Visualizer',
-  description: 'A clean and simple Airtable schema visualization tool',
+  description: 'A simple Airtable schema visualization tool',
 }
 
 export default function RootLayout({
