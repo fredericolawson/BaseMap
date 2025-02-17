@@ -1,15 +1,22 @@
 'use client'
 
 import { useState } from 'react'
-import { JsonView } from 'react-json-view-lite'
-import 'react-json-view-lite/dist/index.css'
 
 interface Field {
   id: string
   name: string
   type: string
   description?: string
-  options?: any
+  options?: {
+    linkedTableId?: string
+    prefersSingleRecordLink?: boolean
+    isReversed?: boolean
+    choices?: Array<{
+      id: string
+      name: string
+      color?: string
+    }>
+  }
   linkedTableId?: string
 }
 

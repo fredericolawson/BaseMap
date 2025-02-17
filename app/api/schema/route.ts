@@ -5,7 +5,16 @@ interface Field {
   name: string
   type: string
   description?: string
-  options?: any
+  options?: {
+    linkedTableId?: string
+    prefersSingleRecordLink?: boolean
+    isReversed?: boolean
+    choices?: Array<{
+      id: string
+      name: string
+      color?: string
+    }>
+  }
   linkedTableId?: string
 }
 
@@ -26,6 +35,17 @@ interface Relationship {
 interface Schema {
   tables: Table[]
   relationships: Relationship[]
+}
+
+interface AirtableTable {
+  id: string
+  name: string
+  primaryFieldId: string
+  fields: Field[]
+}
+
+interface AirtableResponse {
+  tables: AirtableTable[]
 }
 
 export async function GET(request: NextRequest) {
@@ -59,11 +79,11 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const tablesData = await tablesResponse.json()
+    const tablesData: AirtableResponse = await tablesResponse.json()
 
     // Process relationships
     const relationships: Relationship[] = []
-    const tables = tablesData.tables.map((table: any) => {
+    const tables = tablesData.tables.map((table: AirtableTable) => {
       const linkedFields = table.fields.filter((field: Field) => 
         field.type === 'multipleRecordLinks' || 
         field.type === 'multipleLookupValues'
