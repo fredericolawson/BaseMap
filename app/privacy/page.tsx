@@ -8,13 +8,24 @@ export default function PrivacyPolicy() {
         
         <div className="prose prose-lg">
           <p className="mb-6">
-            Basemap is simple and secure. It doesn&apos;t collect, store, or process any access tokens, base IDs, or personal information.
+            Basemap is simple and secure. All API calls are made directly from your browser to Airtable - your access tokens and data never touch our servers.
           </p>
 
           <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">Data Collection</h2>
           <p className="mb-6">
-            Basemap does not collect or store any access tokens, base IDs, or personal data. All operations are performed directly in your browser, and no information is transmitted to or stored on our servers.
+            Basemap operates entirely in your browser. Your access tokens and base IDs are only used locally to make direct API calls to Airtable. No sensitive information ever passes through our servers.
           </p>
+
+          <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">Security Model</h2>
+          <p className="mb-6">
+            For maximum security and privacy, Basemap uses a client-side only approach. This means:
+          </p>
+          <ul className="list-disc pl-6 mb-6">
+            <li className="mb-2">All Airtable API calls happen directly from your browser</li>
+            <li className="mb-2">Your access tokens never leave your device</li>
+            <li className="mb-2">No data is stored or processed on our servers</li>
+            <li className="mb-2">The application code is open source and can be audited</li>
+          </ul>
 
           <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">Your Privacy Rights</h2>
           <p className="mb-6">
