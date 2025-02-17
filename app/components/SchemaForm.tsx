@@ -18,7 +18,7 @@ export default function SchemaForm({ pat, baseId, loading, setPat, setBaseId, on
           value={pat}
           onChange={(e) => setPat(e.target.value)}
           className="pixel-input"
-          placeholder="pat..."
+          placeholder=""
           required
         />
       </div>
