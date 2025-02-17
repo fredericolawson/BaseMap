@@ -8,7 +8,7 @@ export default function PrivacyPolicy() {
         
         <div className="prose prose-lg">
           <p className="mb-6">
-            At basemap, we take your privacy seriously. Our policy is simple: we do not collect, store, or process any personal information.
+            At basemap, we take your privacy seriously. Our policy is simple: we don&apos;t collect, store, or process any personal information.
           </p>
 
           <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">Data Collection</h2>
@@ -18,7 +18,7 @@ export default function PrivacyPolicy() {
 
           <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">Your Privacy Rights</h2>
           <p className="mb-6">
-            Since we don't collect any personal information, there is no user data to access, modify, or delete. Your usage of basemap is completely private.
+            Since we don&apos;t collect any personal information, there is no user data to access, modify, or delete. Your usage of basemap is completely private.
           </p>
 
           <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">Contact</h2>
