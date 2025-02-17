@@ -1,0 +1,1138 @@
+{
+  "tables": [
+    {
+      "id": "tblGge5hmPS097fma",
+      "name": "Events",
+      "primaryFieldId": "fld8xKfKTOKnbNMGn",
+      "fields": [
+        {
+          "id": "fld8xKfKTOKnbNMGn",
+          "name": "Name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldC0ZV1fe9US45Ta",
+          "name": "Organiser",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblZZW8PGQkJX9ec2",
+            "isReversed": false,
+            "prefersSingleRecordLink": true,
+            "inverseLinkFieldId": "fldDIfmZznbcwcuQF"
+          },
+          "linkedTableId": "tblZZW8PGQkJX9ec2"
+        },
+        {
+          "id": "fldi6PJHJAsubDFRf",
+          "name": "Hide",
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          }
+        },
+        {
+          "id": "flddL1p0QjO7eqbfE",
+          "name": "Location",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "id": "selikCVhUnLysaGa6",
+                "name": "National Sports Centre, Bermuda National Stadium",
+                "color": "blueLight2"
+              },
+              {
+                "id": "sel23g49uD8gW5idU",
+                "name": "Bermuda School of Music, Berkeley Cultural Centre",
+                "color": "cyanLight2"
+              },
+              {
+                "id": "seld6cik56ItuBTFZ",
+                "name": "Pier 6 Complex, Upper Level",
+                "color": "tealLight2"
+              },
+              {
+                "id": "seltWhiRixTYFIisa",
+                "name": "Rosa’s Cantina",
+                "color": "greenLight2"
+              },
+              {
+                "id": "seluHPSi7JQTZucz1",
+                "name": "The Botanist",
+                "color": "yellowLight2"
+              },
+              {
+                "id": "seliWizHGS1RsIixk",
+                "name": "22 Princess Street. Hilton Hill Resource Centre",
+                "color": "orangeLight2"
+              },
+              {
+                "id": "sellPBTD2Cz3509da",
+                "name": "Lili Bermuda Perfumery, Stewart Hall, 5 Queen Street, St. George's",
+                "color": "redLight2"
+              },
+              {
+                "id": "selFoWnDyQPhJkNuu",
+                "name": "The Loren Hotel at Pink Beach",
+                "color": "pinkLight2"
+              },
+              {
+                "id": "selhmGXWCY8TrY1fl",
+                "name": "Online",
+                "color": "purpleLight2"
+              },
+              {
+                "id": "seljjH41mFAYkPuav",
+                "name": "Bermuda Visitor Service Centre on Front Street",
+                "color": "grayLight2"
+              },
+              {
+                "id": "selugllah8SrQw09B",
+                "name": "St. John's Church, Hamilton",
+                "color": "blueLight2"
+              },
+              {
+                "id": "selD34cAYtlY4Ie78",
+                "name": "Thyme Restaurant at the Club - Elbow Beach",
+                "color": "cyanLight2"
+              },
+              {
+                "id": "selv7ma4jjGC8b7MS",
+                "name": "Daylesford Theatre",
+                "color": "tealLight2"
+              },
+              {
+                "id": "selT5qhvnClkgMs15",
+                "name": "1 Trackside Lane, Devonshire",
+                "color": "greenLight2"
+              },
+              {
+                "id": "selJh3UaN0VxfiPAh",
+                "name": "Grotto Bay Beach Resort, Hibiscus Room",
+                "color": "yellowLight2"
+              },
+              {
+                "id": "selTrhHXK1u30EAcf",
+                "name": "Ruth Seaton James Auditorium, Cedarbridge Academy",
+                "color": "orangeLight2"
+              },
+              {
+                "id": "selrDznbSVwBUBykt",
+                "name": "Princess Victoria, Hamilton Princess Beach Club & Hotel",
+                "color": "redLight2"
+              },
+              {
+                "id": "sellROzbWIebeKLlE",
+                "name": "Places Place",
+                "color": "pinkLight2"
+              },
+              {
+                "id": "selBv9D2eYZ6ZiT2A",
+                "name": "Onboard The UberVida",
+                "color": "purpleLight2"
+              },
+              {
+                "id": "selIQQhryRhPCRztH",
+                "name": "PIERSIX",
+                "color": "grayLight2"
+              },
+              {
+                "id": "selXt9hVYVHOZ7Pjf",
+                "name": "Bermuda",
+                "color": "blueLight2"
+              },
+              {
+                "id": "selfBbZbqRDwBCgJT",
+                "name": "Donation",
+                "color": "cyanLight2"
+              },
+              {
+                "id": "selXhVjqsrdWpXOQk",
+                "name": "Henry VIII",
+                "color": "tealLight2"
+              },
+              {
+                "id": "selYPj2UFU6cMQcxL",
+                "name": "Hamilton Princess - Princess Ballroom",
+                "color": "greenLight2"
+              },
+              {
+                "id": "selrxUhPsGZIvmd4z",
+                "name": "Three Graces, Newstead Belmont Hills Golf Resort & Spa",
+                "color": "yellowLight2"
+              },
+              {
+                "id": "seldMniyp6wDlGFI4",
+                "name": "Evening Light Church",
+                "color": "orangeLight2"
+              },
+              {
+                "id": "selKTiUZJCya8b5Lx",
+                "name": "Coney Island",
+                "color": "redLight2"
+              },
+              {
+                "id": "selw9V6Vla9SAcMkq",
+                "name": "PTIX",
+                "color": "pinkLight2"
+              },
+              {
+                "id": "sel473bcq3PTX0V7U",
+                "name": "Phoebe Purvis Memorial Hall, Warwick Academy",
+                "color": "blueLight2"
+              },
+              {
+                "id": "selb8td5CzCBYgW6f",
+                "name": "Tradewinds Auditorium at Bermuda Underwater Exploration Institute",
+                "color": "cyanLight2"
+              },
+              {
+                "id": "selhQYNYIvXHCpAO2",
+                "name": "Verdmont, Bermuda National Trust",
+                "color": "tealLight2"
+              },
+              {
+                "id": "sel3wpfmVMTz5k2SY",
+                "name": "Bermuda College Library",
+                "color": "greenLight2"
+              },
+              {
+                "id": "sellTvhIa03mScQ0w",
+                "name": "Alexandrina Lodge",
+                "color": "yellowLight2"
+              },
+              {
+                "id": "selbip8nQAr90HAnS",
+                "name": "Online - Zoom",
+                "color": "orangeLight2"
+              },
+              {
+                "id": "selMGWKl9ewYUGu2c",
+                "name": "Flanagan’s Outback Sports Bar",
+                "color": "redLight2"
+              },
+              {
+                "id": "selW7w2Q646WlB4j1",
+                "name": "Princess Ballroom: Hamilton Princess Hotel",
+                "color": "pinkLight2"
+              },
+              {
+                "id": "sel8YkHgN2BRNBTcP",
+                "name": "Grotto Bay Beach Resort, Oleander Room",
+                "color": "purpleLight2"
+              },
+              {
+                "id": "selhBAMv0emY3NCZp",
+                "name": "Bermuda Aquarium, Museum & Zoo",
+                "color": "grayLight2"
+              },
+              {
+                "id": "selmB8bklM41NyQPc",
+                "name": "Moongate Brewing Co",
+                "color": "blueLight2"
+              },
+              {
+                "id": "selPL5Yo1q5fR6pyx",
+                "name": "Goslings Wine Cellar",
+                "color": "cyanLight2"
+              },
+              {
+                "id": "selbtf0FPXYV7uUaO",
+                "name": "Princess Ballroom, Hamilton Princess Hotel",
+                "color": "tealLight2"
+              },
+              {
+                "id": "selE0Drhdz6dJg15E",
+                "name": "RAA Club",
+                "color": "greenLight2"
+              },
+              {
+                "id": "sel7tgUV2mbv57Jl3",
+                "name": "Maree Restaurant, The Loren",
+                "color": "yellowLight2"
+              },
+              {
+                "id": "selYD7OAg1qsIvaZz",
+                "name": "Docksiders Bar",
+                "color": "orangeLight2"
+              },
+              {
+                "id": "selJvlVDO1CiWtbxW",
+                "name": "Ruth Seaton James Center for the Performing Arts",
+                "color": "redLight2"
+              },
+              {
+                "id": "selplYr49IamY6wxw",
+                "name": "Hamilton Princess Hotel & Beach Club",
+                "color": "pinkLight2"
+              },
+              {
+                "id": "selWGimt0ApibvDGa",
+                "name": "Ruth Seaton James Auditorium",
+                "color": "purpleLight2"
+              },
+              {
+                "id": "selW5kngmAUz5Cdqc",
+                "name": "Flora Duffy Stadium",
+                "color": "grayLight2"
+              },
+              {
+                "id": "seluieZak4SRx7kBf",
+                "name": "Queen Elizabeth Park, Hamilton",
+                "color": "blueLight2"
+              }
+            ]
+          }
+        },
+        {
+          "id": "fldGI2RfpizgfWfjn",
+          "name": "Publish",
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "AND({fldi6PJHJAsubDFRf} = FALSE(), {fldloHYRCYMuS2e8C} = \"\")",
+            "referencedFieldIds": [
+              "fldi6PJHJAsubDFRf",
+              "fldloHYRCYMuS2e8C"
+            ],
+            "result": {
+              "type": "checkbox",
+              "options": {
+                "icon": "check",
+                "color": "greenBright"
+              }
+            }
+          }
+        },
+        {
+          "id": "fld4E2DZka2sn22KV",
+          "name": "Start",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "friendly",
+              "format": "LL"
+            },
+            "timeFormat": {
+              "name": "12hour",
+              "format": "h:mma"
+            },
+            "timeZone": "client"
+          }
+        },
+        {
+          "id": "fldFezyTq07xLZfVh",
+          "name": "End",
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "IF(\n  {fldelrvUmoeENiw7M}, {fldelrvUmoeENiw7M}, DATEADD({fld4E2DZka2sn22KV}, 4, \"hours\")\n)",
+            "referencedFieldIds": [
+              "fldelrvUmoeENiw7M",
+              "fld4E2DZka2sn22KV"
+            ],
+            "result": {
+              "type": "dateTime",
+              "options": {
+                "dateFormat": {
+                  "name": "friendly",
+                  "format": "LL"
+                },
+                "timeFormat": {
+                  "name": "12hour",
+                  "format": "h:mma"
+                },
+                "timeZone": "client"
+              }
+            }
+          }
+        },
+        {
+          "id": "fldelrvUmoeENiw7M",
+          "name": "EndDate",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "friendly",
+              "format": "LL"
+            },
+            "timeFormat": {
+              "name": "12hour",
+              "format": "h:mma"
+            },
+            "timeZone": "client"
+          }
+        },
+        {
+          "id": "fld1uvNytSNaV4AvW",
+          "name": "OrganiserName",
+          "type": "multipleLookupValues",
+          "options": {
+            "isValid": true,
+            "recordLinkFieldId": "fldC0ZV1fe9US45Ta",
+            "fieldIdInLinkedTable": "fld4wZQwrxdD6eRtn",
+            "result": {
+              "type": "singleLineText"
+            }
+          }
+        },
+        {
+          "id": "fld4pP4gBjOba3yOh",
+          "name": "Future",
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "{fldFezyTq07xLZfVh} >= TODAY()",
+            "referencedFieldIds": [
+              "fldFezyTq07xLZfVh"
+            ],
+            "result": {
+              "type": "checkbox",
+              "options": {
+                "icon": "check",
+                "color": "greenBright"
+              }
+            }
+          }
+        },
+        {
+          "id": "fldIjCnx4HYqVks0q",
+          "name": "Description",
+          "type": "richText"
+        },
+        {
+          "id": "flduk2YFY9TiaoxSR",
+          "name": "Tags",
+          "type": "multipleSelects",
+          "options": {
+            "choices": [
+              {
+                "id": "selL3clXC8t6PWmkK",
+                "name": "Arts"
+              },
+              {
+                "id": "selmqY6CDZfO92Gyt",
+                "name": "Charity"
+              },
+              {
+                "id": "selEKMyReDVrhZ4fM",
+                "name": "Concert"
+              },
+              {
+                "id": "selWEQWYPupUsoJnO",
+                "name": "Cruise"
+              },
+              {
+                "id": "seli5DdioR1bYfY5K",
+                "name": "Culinary"
+              },
+              {
+                "id": "selP8WNPyXKQJFBti",
+                "name": "Dining"
+              },
+              {
+                "id": "selHRPNMCJMh7IMkC",
+                "name": "Fashion"
+              },
+              {
+                "id": "sel2Eqc2rZe8njaTx",
+                "name": "Festival"
+              },
+              {
+                "id": "sel52ByLPGmlVNlhA",
+                "name": "Food"
+              },
+              {
+                "id": "selrnlG1XrN3yBAS5",
+                "name": "Fundraiser"
+              },
+              {
+                "id": "seltwG04CjMbYW2Yb",
+                "name": "Gala"
+              },
+              {
+                "id": "selEfEFI61gOXuEPm",
+                "name": "History"
+              },
+              {
+                "id": "seltZiYprQ4Xcy31f",
+                "name": "Holiday"
+              },
+              {
+                "id": "selYqTGm4PPkx8og3",
+                "name": "Mentorship"
+              },
+              {
+                "id": "selTFtZUTP70NyE8v",
+                "name": "Motocross"
+              },
+              {
+                "id": "selqBw8wlDcJp1Mvj",
+                "name": "Music"
+              },
+              {
+                "id": "selMTHrQXSOeTvF90",
+                "name": "Party"
+              },
+              {
+                "id": "selHbyD20pykgfstV",
+                "name": "Sports"
+              },
+              {
+                "id": "selgoOPzxYKgBS8Di",
+                "name": "Tasting"
+              },
+              {
+                "id": "selXfSZ1nyTpK3a3F",
+                "name": "Tour"
+              },
+              {
+                "id": "selxuAzACwljGNtxX",
+                "name": "Wellness"
+              },
+              {
+                "id": "selYtkpVnuFZQIvgV",
+                "name": "Workshop"
+              },
+              {
+                "id": "selDrYVYpyuO6kwzT",
+                "name": "Event"
+              },
+              {
+                "id": "selNRsH766oPN4nyb",
+                "name": "Drinks"
+              }
+            ]
+          }
+        },
+        {
+          "id": "fldQBmqwrabtgkFWZ",
+          "name": "Images",
+          "type": "multipleAttachments",
+          "options": {
+            "isReversed": false
+          }
+        },
+        {
+          "id": "fldWzACYA8Gpu9Gmw",
+          "name": "Your Event Link",
+          "type": "url"
+        },
+        {
+          "id": "fld8Ku2h9v0qA3pt4",
+          "name": "Handle",
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "IF(\n  {fldC0ZV1fe9US45Ta}, \n  {fldN8wLXn40Dqr1VP} &\"/events/\"& {fldESo431KEp7nN6g}\n)",
+            "referencedFieldIds": [
+              "fldC0ZV1fe9US45Ta",
+              "fldN8wLXn40Dqr1VP",
+              "fldESo431KEp7nN6g"
+            ],
+            "result": {
+              "type": "singleLineText"
+            }
+          }
+        },
+        {
+          "id": "fldloHYRCYMuS2e8C",
+          "name": "Notifications",
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "IF({fld8xKfKTOKnbNMGn} = \"\", \"🔵 Add Event Title \\n\") &\nIF({fldIjCnx4HYqVks0q} = \"\", \"🔵 Add Event Description \\n\") &\nIF({fld4E2DZka2sn22KV} = \"\", \"🔵 Add Event Start \\n\") &\nIF({fldC0ZV1fe9US45Ta} = \"\", \"🔵 Add Organiser\") &\nIF({flddL1p0QjO7eqbfE} = \"\", \"🔵 Add Event Location \\n\") &\nIF({fldQBmqwrabtgkFWZ} = \"\", \"🔵 Set Event Image \\n\")",
+            "referencedFieldIds": [
+              "fld8xKfKTOKnbNMGn",
+              "fldIjCnx4HYqVks0q",
+              "fld4E2DZka2sn22KV",
+              "fldC0ZV1fe9US45Ta",
+              "flddL1p0QjO7eqbfE",
+              "fldQBmqwrabtgkFWZ"
+            ],
+            "result": {
+              "type": "singleLineText"
+            }
+          }
+        },
+        {
+          "id": "fldESo431KEp7nN6g",
+          "name": "EventHandle",
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "LOWER(\n  SUBSTITUTE(\n    SUBSTITUTE(\n      REGEX_REPLACE(TRIM({fld8xKfKTOKnbNMGn}), \"[^a-zA-Z0-9 ]\", \"\"), \n      \" \", \"-\"\n    ), \"--\", \"-\"\n  )\n)\n                ",
+            "referencedFieldIds": [
+              "fld8xKfKTOKnbNMGn"
+            ],
+            "result": {
+              "type": "singleLineText"
+            }
+          }
+        },
+        {
+          "id": "fldN8wLXn40Dqr1VP",
+          "name": "OrganiserHandle",
+          "type": "multipleLookupValues",
+          "options": {
+            "isValid": true,
+            "recordLinkFieldId": "fldC0ZV1fe9US45Ta",
+            "fieldIdInLinkedTable": "fldUjvEUo2empg7NX",
+            "result": {
+              "type": "singleLineText"
+            }
+          }
+        },
+        {
+          "id": "fldQPnPgpjp9oqmSC",
+          "name": "Duration",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "id": "fldmsPAzrYmvBzRIp",
+          "name": "StartDate",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "local",
+              "format": "l"
+            }
+          }
+        },
+        {
+          "id": "fldyxTZhv2HmEpwmv",
+          "name": "AI Tag",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldIVIqVR5mvdYFh5",
+          "name": "Type",
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "id": "selEdimPUK12xXm32",
+                "name": "Paid For",
+                "color": "blueLight2"
+              },
+              {
+                "id": "selIHUf9JQQ24nP4y",
+                "name": "Free",
+                "color": "cyanLight2"
+              }
+            ]
+          }
+        },
+        {
+          "id": "flddb9ghvTdoea4Tv",
+          "name": "DEV | Organiser ID",
+          "type": "multipleLookupValues",
+          "options": {
+            "isValid": true,
+            "recordLinkFieldId": "fldC0ZV1fe9US45Ta",
+            "fieldIdInLinkedTable": "fldumZBKEJ1FCzhxK",
+            "result": {
+              "type": "singleLineText"
+            }
+          }
+        },
+        {
+          "id": "fldEyMHIZibUzqXuN",
+          "name": "AI Description",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldT0jttXvp04tyi6",
+          "name": "Created by",
+          "type": "createdBy"
+        },
+        {
+          "id": "fldVQOlmHMNOAxiDd",
+          "name": "Owner",
+          "type": "multipleLookupValues",
+          "options": {
+            "isValid": true,
+            "recordLinkFieldId": "fldC0ZV1fe9US45Ta",
+            "fieldIdInLinkedTable": "fldrI1p0pCQx9GI8G",
+            "result": {
+              "type": "multipleCollaborators"
+            }
+          }
+        },
+        {
+          "id": "fldTindpUsDaxXMQl",
+          "name": "Master",
+          "type": "singleCollaborator"
+        },
+        {
+          "id": "fldjbUjIRRhb6e04K",
+          "name": "Active",
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "{fldFezyTq07xLZfVh} >= TODAY()",
+            "referencedFieldIds": [
+              "fldFezyTq07xLZfVh"
+            ],
+            "result": {
+              "type": "checkbox",
+              "options": {
+                "icon": "check",
+                "color": "greenBright"
+              }
+            }
+          }
+        },
+        {
+          "id": "fldj0gybpcahsFLJ1",
+          "name": "DEV | Conversion",
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "DATEADD({fldvqpEKyhMG1gECA}, {fldLZbZO7N86PTudF}, 'second')",
+            "referencedFieldIds": [
+              "fldvqpEKyhMG1gECA",
+              "fldLZbZO7N86PTudF"
+            ],
+            "result": {
+              "type": "dateTime",
+              "options": {
+                "dateFormat": {
+                  "name": "european",
+                  "format": "D/M/YYYY"
+                },
+                "timeFormat": {
+                  "name": "12hour",
+                  "format": "h:mma"
+                },
+                "timeZone": "client"
+              }
+            }
+          }
+        },
+        {
+          "id": "fldLZbZO7N86PTudF",
+          "name": "Time",
+          "type": "duration",
+          "options": {
+            "durationFormat": "h:mm"
+          }
+        },
+        {
+          "id": "fldvqpEKyhMG1gECA",
+          "name": "Start (scraped)",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "local",
+              "format": "l"
+            },
+            "timeFormat": {
+              "name": "12hour",
+              "format": "h:mma"
+            },
+            "timeZone": "client"
+          }
+        },
+        {
+          "id": "fldJCgQLA1c272CGQ",
+          "name": "Time (scraped)",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldgObbSqwFITxQ9Y",
+          "name": "Event Status",
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "IF(\n  {fldGI2RfpizgfWfjn}, \"Published\", \"Draft\"\n)",
+            "referencedFieldIds": [
+              "fldGI2RfpizgfWfjn"
+            ],
+            "result": {
+              "type": "singleSelect",
+              "options": {
+                "choices": [
+                  {
+                    "id": "selFORMULADEFAULT",
+                    "name": "Published",
+                    "color": "greenBright"
+                  },
+                  {
+                    "id": "selCkCKNBYdmGSmMv",
+                    "name": "Draft",
+                    "color": "blueBright"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "id": "fld1UMyT9OC4xsjCH",
+          "name": "What's On Link",
+          "type": "button"
+        },
+        {
+          "id": "fldSktzYhOE3TyFDP",
+          "name": "Valid",
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "{fldloHYRCYMuS2e8C} = \"\"",
+            "referencedFieldIds": [
+              "fldloHYRCYMuS2e8C"
+            ],
+            "result": {
+              "type": "checkbox",
+              "options": {
+                "icon": "check",
+                "color": "greenBright"
+              }
+            }
+          }
+        },
+        {
+          "id": "fldM87bmHl8Bb6ykm",
+          "name": "Locations",
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "ARRAYJOIN({flddL1p0QjO7eqbfE})",
+            "referencedFieldIds": [
+              "flddL1p0QjO7eqbfE"
+            ],
+            "result": {
+              "type": "singleLineText"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "tblZZW8PGQkJX9ec2",
+      "name": "Organisers",
+      "primaryFieldId": "fld4wZQwrxdD6eRtn",
+      "fields": [
+        {
+          "id": "fld4wZQwrxdD6eRtn",
+          "name": "Name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld8OLGf9vSshlAMp",
+          "name": "Email",
+          "type": "email"
+        },
+        {
+          "id": "fldrI1p0pCQx9GI8G",
+          "name": "Owners",
+          "type": "multipleCollaborators"
+        },
+        {
+          "id": "fldDIfmZznbcwcuQF",
+          "name": "Events",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblGge5hmPS097fma",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldC0ZV1fe9US45Ta"
+          },
+          "linkedTableId": "tblGge5hmPS097fma"
+        },
+        {
+          "id": "fldT4qqdapc3UYOyn",
+          "name": "Master",
+          "type": "singleCollaborator"
+        },
+        {
+          "id": "fldcuZJzKwGqcAoYo",
+          "name": "Creator",
+          "type": "createdBy"
+        },
+        {
+          "id": "fldumZBKEJ1FCzhxK",
+          "name": "Record ID",
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "RECORD_ID()",
+            "referencedFieldIds": [],
+            "result": {
+              "type": "singleLineText"
+            }
+          }
+        },
+        {
+          "id": "fldtjLndqWd4SMIYo",
+          "name": "Events #",
+          "type": "count",
+          "options": {
+            "isValid": true,
+            "recordLinkFieldId": "fldDIfmZznbcwcuQF"
+          }
+        },
+        {
+          "id": "fldG7cbn1b8xBCvIf",
+          "name": "Phone",
+          "type": "phoneNumber"
+        },
+        {
+          "id": "fldz8yuvNcNeS1jfT",
+          "name": "Website",
+          "type": "url"
+        },
+        {
+          "id": "fld0JH5uZvIaBtBe7",
+          "name": "Next Event Date",
+          "type": "rollup",
+          "options": {
+            "isValid": true,
+            "recordLinkFieldId": "fldDIfmZznbcwcuQF",
+            "fieldIdInLinkedTable": "fldFezyTq07xLZfVh",
+            "referencedFieldIds": [],
+            "result": {
+              "type": "date",
+              "options": {
+                "dateFormat": {
+                  "name": "friendly",
+                  "format": "LL"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "fldr5jM99JQqCNbgW",
+          "name": "Active Events",
+          "type": "count",
+          "options": {
+            "isValid": true,
+            "recordLinkFieldId": "fldDIfmZznbcwcuQF"
+          }
+        },
+        {
+          "id": "fldWOfGdVqD3IcupW",
+          "name": "Description",
+          "type": "richText"
+        },
+        {
+          "id": "fldUjvEUo2empg7NX",
+          "name": "Handle",
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "LOWER(\n  SUBSTITUTE(\n    REGEX_REPLACE({fld4wZQwrxdD6eRtn}, \"[^a-zA-Z0-9 ]\", \"\"), \n    \" \", \"-\"\n  )\n)\n                ",
+            "referencedFieldIds": [
+              "fld4wZQwrxdD6eRtn"
+            ],
+            "result": {
+              "type": "singleLineText"
+            }
+          }
+        },
+        {
+          "id": "fldd3bvscdqE8U3Kt",
+          "name": "View Organiser Page",
+          "type": "button"
+        },
+        {
+          "id": "fldhg7eDpW97cAvCn",
+          "name": "Image",
+          "type": "multipleAttachments",
+          "options": {
+            "isReversed": false
+          }
+        },
+        {
+          "id": "fldVSCe52AF4vghvE",
+          "name": "Owner Name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldqIFTaty1PC2fUj",
+          "name": "Notifications",
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "IF({fldWOfGdVqD3IcupW} = \"\", \"🟦 Please set a description \\n\")&\nIF({fldz8yuvNcNeS1jfT} = \"\", \"🟦 Please set a website \\n\")&\nIF({fldhg7eDpW97cAvCn} = \"\", \"🟦 Please set an image \\n\")",
+            "referencedFieldIds": [
+              "fldWOfGdVqD3IcupW",
+              "fldz8yuvNcNeS1jfT",
+              "fldhg7eDpW97cAvCn"
+            ],
+            "result": {
+              "type": "singleLineText"
+            }
+          }
+        },
+        {
+          "id": "fldmaUmQGXCz7sMVR",
+          "name": "Valid",
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "{fldqIFTaty1PC2fUj} = \"\"",
+            "referencedFieldIds": [
+              "fldqIFTaty1PC2fUj"
+            ],
+            "result": {
+              "type": "checkbox",
+              "options": {
+                "icon": "check",
+                "color": "greenBright"
+              }
+            }
+          }
+        },
+        {
+          "id": "fldlH2StsFRaPH2Sd",
+          "name": "Modified at",
+          "type": "lastModifiedTime",
+          "options": {
+            "isValid": true,
+            "referencedFieldIds": [],
+            "result": {
+              "type": "dateTime",
+              "options": {
+                "dateFormat": {
+                  "name": "local",
+                  "format": "l"
+                },
+                "timeFormat": {
+                  "name": "12hour",
+                  "format": "h:mma"
+                },
+                "timeZone": "client"
+              }
+            }
+          }
+        },
+        {
+          "id": "fldR1g90o3mQOgHy0",
+          "name": "Locations",
+          "type": "rollup",
+          "options": {
+            "isValid": true,
+            "recordLinkFieldId": "fldDIfmZznbcwcuQF",
+            "fieldIdInLinkedTable": "flddL1p0QjO7eqbfE",
+            "referencedFieldIds": [],
+            "result": {
+              "type": "singleLineText"
+            }
+          }
+        },
+        {
+          "id": "fldckQVwgUPtd9tlo",
+          "name": "Modified by",
+          "type": "lastModifiedBy"
+        }
+      ]
+    },
+    {
+      "id": "tblCdVx8ULGnBil75",
+      "name": "Registrations",
+      "primaryFieldId": "fldUtNqtMWyMNxAl2",
+      "fields": [
+        {
+          "id": "fldUtNqtMWyMNxAl2",
+          "name": "Name",
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "{fld7Nd5n6YdI65Yit} &\" \"& {fld6SO9JmU3TFnJH8}",
+            "referencedFieldIds": [
+              "fld7Nd5n6YdI65Yit",
+              "fld6SO9JmU3TFnJH8"
+            ],
+            "result": {
+              "type": "singleLineText"
+            }
+          }
+        },
+        {
+          "id": "fld7Nd5n6YdI65Yit",
+          "name": "First Name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld6SO9JmU3TFnJH8",
+          "name": "Last Name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldkzzGZskFlVo3Zw",
+          "name": "About",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldMeYqUEvCUw4p8m",
+          "name": "Email",
+          "type": "email"
+        },
+        {
+          "id": "fld0qp4QrfmhgquEc",
+          "name": "Created at",
+          "type": "createdTime",
+          "options": {
+            "result": {
+              "type": "dateTime",
+              "options": {
+                "dateFormat": {
+                  "name": "local",
+                  "format": "l"
+                },
+                "timeFormat": {
+                  "name": "12hour",
+                  "format": "h:mma"
+                },
+                "timeZone": "client"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "tbl5FY0viqCwWB9RY",
+      "name": "Locations",
+      "primaryFieldId": "fldA1MwZ7JGm9J1Wv",
+      "fields": [
+        {
+          "id": "fldA1MwZ7JGm9J1Wv",
+          "name": "Name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldKKWcp3yO41wdZ3",
+          "name": "Google Maps Link",
+          "type": "url"
+        },
+        {
+          "id": "fldmK5bBBxzTKyl1i",
+          "name": "Events",
+          "type": "singleLineText"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "from": "tblGge5hmPS097fma",
+      "to": "tblZZW8PGQkJX9ec2",
+      "fieldId": "fldC0ZV1fe9US45Ta",
+      "type": "oneToOne"
+    },
+    {
+      "from": "tblZZW8PGQkJX9ec2",
+      "to": "tblGge5hmPS097fma",
+      "fieldId": "fldDIfmZznbcwcuQF",
+      "type": "oneToMany"
+    }
+  ]
+}

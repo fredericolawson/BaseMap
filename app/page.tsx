@@ -1,101 +1,185 @@
-import Image from "next/image";
+'use client'
+
+import { useState } from 'react'
+import { JsonView } from 'react-json-view-lite'
+import 'react-json-view-lite/dist/index.css'
+
+interface Field {
+  id: string
+  name: string
+  type: string
+  description?: string
+  options?: any
+  linkedTableId?: string
+}
+
+interface Table {
+  id: string
+  name: string
+  primaryFieldId: string
+  fields: Field[]
+}
+
+interface Relationship {
+  from: string
+  to: string
+  fieldId: string
+  type: 'oneToMany' | 'manyToOne' | 'oneToOne'
+}
+
+interface Schema {
+  tables: Table[]
+  relationships: Relationship[]
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [pat, setPat] = useState('')
+  const [baseId, setBaseId] = useState('')
+  const [schema, setSchema] = useState<Schema | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const fetchSchema = async () => {
+    setLoading(true)
+    setError('')
+    try {
+      const response = await fetch(`/api/schema?baseId=${baseId}`, {
+        headers: {
+          'Authorization': `Bearer ${pat}`
+        }
+      })
+      if (!response.ok) {
+        throw new Error('Failed to fetch schema')
+      }
+      const data = await response.json()
+      setSchema(data)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const getTableById = (id: string) => {
+    return schema?.tables.find(table => table.id === id)
+  }
+
+  return (
+    <main className="max-w-3xl mx-auto py-12 px-4">
+      <header className="text-center mb-12">
+        <h1 className="title text-3xl font-bold mb-2">BaseMap</h1>
+        <p className="text-gray-600 dark:text-gray-400">Airtable Schema Visualizer</p>
+      </header>
+
+      <section className="space-y-8">
+        <form onSubmit={(e) => {
+          e.preventDefault()
+          fetchSchema()
+        }} className="space-y-6">
+          <div>
+            <label htmlFor="pat" className="block text-sm font-medium mb-2">Personal Access Token</label>
+            <input
+              id="pat"
+              type="password"
+              value={pat}
+              onChange={(e) => setPat(e.target.value)}
+              className="pixel-input"
+              placeholder="pat..."
+              required
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          </div>
+
+          <div>
+            <label htmlFor="baseId" className="block text-sm font-medium mb-2">Base ID</label>
+            <input
+              id="baseId"
+              type="text"
+              value={baseId}
+              onChange={(e) => setBaseId(e.target.value)}
+              className="pixel-input"
+              placeholder="app..."
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="pixel-button w-full"
           >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+            {loading ? 'Loading...' : 'View Schema'}
+          </button>
+        </form>
+
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-md p-4 text-red-600">
+            <p>{error}</p>
+          </div>
+        )}
+
+        {schema && (
+          <div className="space-y-8">
+            {schema.tables.map(table => (
+              <div key={table.id} className="pixel-container">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="title text-lg font-medium">{table.name}</h2>
+                  <span className="text-sm text-gray-500">{table.fields.length} fields</span>
+                </div>
+
+                <div className="space-y-4">
+                  {/* Fields */}
+                  <div className="space-y-2">
+                    {table.fields.map(field => (
+                      <div key={field.id} className="text-sm">
+                        <span className="font-medium">{field.name}</span>
+                        <span className="text-gray-500 ml-2">{field.type}</span>
+                        {field.description && (
+                          <p className="text-gray-600 text-xs mt-1">{field.description}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Relationships */}
+                  {schema.relationships
+                    .filter(rel => rel.from === table.id || rel.to === table.id)
+                    .map(rel => {
+                      const isSource = rel.from === table.id
+                      const otherTable = getTableById(isSource ? rel.to : rel.from)
+                      if (!otherTable) return null
+
+                      return (
+                        <div key={rel.fieldId} className="text-sm bg-gray-50 p-3 rounded-md">
+                          <span className="text-gray-600">
+                            {isSource ? 'Links to' : 'Linked from'}{' '}
+                            <span className="font-medium">{otherTable.name}</span>
+                            {' via '}
+                            {isSource
+                              ? table.fields.find(f => f.id === rel.fieldId)?.name
+                              : otherTable.fields.find(f => f.id === rel.fieldId)?.name}
+                            {' '}
+                            ({rel.type})
+                          </span>
+                        </div>
+                      )
+                    })}
+                </div>
+              </div>
+            ))}
+
+            <div className="text-center">
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(JSON.stringify(schema, null, 2))
+                }}
+                className="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-md transition-colors"
+              >
+                Copy Raw JSON
+              </button>
+            </div>
+          </div>
+        )}
+      </section>
+    </main>
+  )
 }

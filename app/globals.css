@@ -4,18 +4,47 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1a1a1a;
+  --accent: #3b82f6;
+  --border: #e5e7eb;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #1a1a1a;
+    --foreground: #ffffff;
+    --border: #2d2d2d;
   }
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .pixel-border {
+    @apply border border-gray-200 shadow-sm;
+  }
+
+  .pixel-button {
+    @apply bg-blue-500 text-white px-4 py-2 rounded-md 
+           hover:bg-blue-600 transition-colors
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .pixel-input {
+    @apply border border-gray-200 rounded-md px-4 py-2 w-full
+           focus:outline-none focus:ring-2 focus:ring-blue-500;
+  }
+
+  .pixel-container {
+    @apply bg-white rounded-lg border border-gray-200 p-6 shadow-sm;
+  }
+
+  .title {
+    @apply font-mono tracking-tight;
+  }
 }
