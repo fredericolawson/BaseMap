@@ -12,7 +12,7 @@ function TableRelationship({ relationship, table, getTableById, isSource }: Tabl
   if (!otherTable) return null
 
   return (
-    <div className="text-sm bg-gray-50 p-3 rounded-md">
+    <div className="text-sm bg-gray-50 p-3 rounded-md border border-gray-200 hover:bg-gray-100 transition-colors">
       <span className="text-gray-600">
         {isSource ? 'Links to' : 'Linked from'}{' '}
         <span className="font-medium">{otherTable.name}</span>
@@ -37,40 +37,44 @@ export default function SchemaViewer({ schema, onCopyJson, onDownloadJson }: Sch
   const getTableById = (id: string) => schema.tables.find(table => table.id === id)
 
   return (
-    <div className="space-y-8">
-      <div className="text-center space-x-4">
+    <div className="space-y-6">
+      <div className="flex justify-center space-x-4">
         <button
           onClick={onCopyJson}
-          className="btn-secondary"
+          className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:ring-2 focus:ring-blue-500/20 transition-colors"
         >
           Copy JSON
         </button>
         <button
           onClick={onDownloadJson}
-          className="btn-secondary"
+          className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:ring-2 focus:ring-blue-500/20 transition-colors"
         >
           Download JSON
         </button>
       </div>
       
       {schema.tables.map(table => (
-        <div key={table.id} className="pixel-container">
-          <div className="flex justify-between  mb-4">
-            <h2 className="title text-lg font-medium">{table.name}</h2>
-            <div className="flex flex-col gap-2">
-              <button className="btn-secondary">Sort Fields by Type</button>
+        <div key={table.id} className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+          <div className="flex justify-between items-start mb-6 pb-4 border-b border-gray-100">
+            <h2 className="text-lg font-semibold text-gray-900">{table.name}</h2>
+            <div className="flex flex-col items-end gap-2">
+              <button className="px-3 py-1.5 text-sm text-gray-700 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors">
+                Sort Fields by Type
+              </button>
               <span className="text-sm text-gray-500">{table.fields.length} fields</span>
             </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="space-y-2">
+          <div className="space-y-6">
+            <div className="space-y-1">
               {table.fields.map(field => (
-                <div key={field.id} className="text-sm">
-                  <span className="font-medium">{field.name}</span>
-                  <span className="text-gray-500 ml-2">{field.type}</span>
+                <div key={field.id} className="group p-2 rounded-md hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center">
+                    <span className="font-medium text-gray-900">{field.name}</span>
+                    <span className="ml-2 px-2 py-0.5 text-xs text-gray-600 bg-gray-100 rounded-full">{field.type}</span>
+                  </div>
                   {field.description && (
-                    <p className="text-gray-600 text-xs mt-1">{field.description}</p>
+                    <p className="text-xs text-gray-500 mt-1">{field.description}</p>
                   )}
                 </div>
               ))}
@@ -90,8 +94,6 @@ export default function SchemaViewer({ schema, onCopyJson, onDownloadJson }: Sch
           </div>
         </div>
       ))}
-
-      
     </div>
   )
 } 

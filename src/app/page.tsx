@@ -39,7 +39,7 @@ export default function Home() {
   } = useGeminiAnalysis(geminiApiKey)
 
   return (
-    <main className="max-w-3xl mx-auto py-12 px-4">
+    <main className="max-w-3xl mx-auto py-12 px-4 min-h-screen bg-gray-50">
       <Header />
 
       <section className="space-y-8">
@@ -63,7 +63,7 @@ export default function Home() {
           }}
         />
 
-        <div className="border-t  pt-8">
+        <div className="border-t border-gray-200 pt-8">
           <GeminiAnalysis
             schema={schema}
             geminiApiKey={geminiApiKey}
@@ -78,13 +78,13 @@ export default function Home() {
         {error && <ErrorMessage message={error} />}
 
         {schema && (
-          <>
+
             <SchemaViewer
               schema={schema}
               onCopyJson={copyJson}
               onDownloadJson={downloadJson}
             />
-          </>
+
         )}
       </section>
     </main>

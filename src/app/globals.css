@@ -2,7 +2,7 @@
 
 :root {
   --accent: #3b82f6;
-  --border: #e5e7eb;
+  --border: #e0e0e0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,11 +18,11 @@ body {
 
 @layer components {
   .pixel-border {
-    @apply border border-gray-200 shadow-sm;
+    @apply border border-[#e0e0e0] shadow-sm;
   }
 
   .border {
-    @apply border border-gray-200 shadow-sm;
+    @apply border border-[#e0e0e0] shadow-sm;
   }
 
   .pixel-button {
@@ -37,7 +37,7 @@ body {
   }
 
   .pixel-container {
-    @apply bg-white rounded-lg border border-gray-200 p-6 shadow-sm;
+    @apply bg-white rounded-lg border border-[#e0e0e0] p-6 shadow-sm;
   }
 
   .title {
@@ -69,7 +69,7 @@ body {
     --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
+    --border: 0 0% 88%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
     --chart-1: 12 76% 61%;
@@ -107,10 +107,3 @@ body {
   }
 }
 
-
-
-@layer base {
-  body {
-   
-  }
-}

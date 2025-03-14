@@ -2,9 +2,13 @@
 
 import { useState, useEffect, ChangeEvent } from 'react'
 import ReactMarkdown from 'react-markdown'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { Schema } from '../types/schema'
 import ErrorMessage from './ErrorMessage'
 import { EyeIcon, EyeOffIcon, Download, Copy, Loader2 } from "lucide-react"
+
+const DEFAULT_PROMPT = "Analyze the provided schema and provide a detailed report on its structure and content.";
 
 interface GeminiAnalysisProps {
   schema: Schema | null
@@ -13,7 +17,7 @@ interface GeminiAnalysisProps {
   analysis: string | null
   error: string
   setGeminiApiKey: (key: string) => void
-  analyzeSchema: (schema: Schema | null) => Promise<void>
+  analyzeSchema: (schema: Schema | null, prompt: string) => Promise<void>
 }
 
 function useAnalysisTimer(analyzing: boolean) {
@@ -47,6 +51,8 @@ export default function GeminiAnalysis({
   const [showApiKey, setShowApiKey] = useState(false)
   const [jsonInput, setJsonInput] = useState('')
   const [useJsonInput, setUseJsonInput] = useState(false)
+  const [showPromptCustomization, setShowPromptCustomization] = useState(false)
+  const [customPrompt, setCustomPrompt] = useState(DEFAULT_PROMPT)
   const elapsedSeconds = useAnalysisTimer(analyzing)
 
   const handleAnalyze = (e: React.FormEvent) => {
@@ -54,12 +60,12 @@ export default function GeminiAnalysis({
     if (useJsonInput && jsonInput) {
       try {
         const parsedSchema = JSON.parse(jsonInput)
-        analyzeSchema(parsedSchema)
+        analyzeSchema(parsedSchema, customPrompt)
       } catch (err) {
         console.error('Invalid JSON input:', err)
       }
     } else {
-      analyzeSchema(schema)
+      analyzeSchema(schema, customPrompt)
     }
   }
 
@@ -85,7 +91,7 @@ export default function GeminiAnalysis({
   }
 
   return (
-    <div className="border p-4 rounded-lg">
+    <div className="pixel-container space-y-4">
       <h2 className="font-medium mb-2">Gemini Schema Analysis</h2>
       
       <form onSubmit={handleAnalyze} className="space-y-4" autoComplete="off">
@@ -110,16 +116,52 @@ export default function GeminiAnalysis({
             </div>
             <button
               type="button"
-              className="bg-gray-200 text-gray-600 px-4 py-2 rounded-md"
+              className="px-3 py-2 text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
               onClick={() => setShowApiKey(!showApiKey)}
             >
               {showApiKey ? <EyeOffIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4" />}
             </button>
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-gray-500">
             Click <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="underline">here</a> to get a Gemini API key.
             Your API key is stored locally in your browser and never sent to our servers.
           </p>
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <label className="block text-sm font-medium text-gray-700" htmlFor="customPrompt">
+              Analysis Prompt
+            </label>
+            <button
+              type="button"
+              className="text-sm text-gray-500 hover:text-gray-700"
+              onClick={() => setShowPromptCustomization(!showPromptCustomization)}
+            >
+              {showPromptCustomization ? 'Hide Prompt' : 'Customize Prompt'}
+            </button>
+          </div>
+          
+          {showPromptCustomization && (
+            <div className="space-y-2">
+              <textarea
+                id="customPrompt"
+                value={customPrompt}
+                onChange={(e) => setCustomPrompt(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-shadow"
+                rows={4}
+              />
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setCustomPrompt(DEFAULT_PROMPT)}
+                  className="text-sm text-blue-500 hover:text-blue-600"
+                >
+                  Reset to Default
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {!schema && (
@@ -177,27 +219,69 @@ export default function GeminiAnalysis({
             <div className="flex space-x-2">
               <button
                 onClick={downloadAnalysis}
-                className="bg-gray-200 text-gray-600 px-4 py-2 rounded-md"
+                className="px-3 py-1.5 text-sm text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:ring-2 focus:ring-blue-500/20 transition-colors flex items-center gap-2"
               >
-                <Download className="mr-2 h-4 w-4" />
+                <Download className="h-4 w-4" />
                 Download as Markdown
               </button>
               <button
                 onClick={copyAnalysis}
-                className="bg-gray-200 text-gray-600 px-4 py-2 rounded-md"
+                className="px-3 py-1.5 text-sm text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:ring-2 focus:ring-blue-500/20 transition-colors flex items-center gap-2"
               >
-                <Copy className="mr-2 h-4 w-4" />
+                <Copy className="h-4 w-4" />
                 Copy
               </button>
             </div>
           </div>
-          <div className="prose prose-sm max-w-none overflow-auto rounded-md border bg-muted p-4">
-            <ReactMarkdown>
-              {analysis}
-            </ReactMarkdown>
+          <div className="rounded-lg border border-gray-200 p-6">
+            <article className="prose prose-gray prose-sm max-w-none">
+              <ReactMarkdown
+                components={{
+                  h1: ({node, ...props}) => (
+                    <h1 className="text-2xl font-semibold mb-4 pb-2 border-b border-gray-200" {...props} />
+                  ),
+                  h2: ({node, ...props}) => (
+                    <h2 className="text-xl font-medium mt-6 mb-3" {...props} />
+                  ),
+                  h3: ({node, ...props}) => (
+                    <h3 className="text-lg font-medium mt-4 mb-2" {...props} />
+                  ),
+                  p: ({node, ...props}) => (
+                    <p className="text-gray-600 leading-relaxed mb-4" {...props} />
+                  ),
+                  ul: ({node, ...props}) => (
+                    <ul className="list-disc pl-6 mb-4 space-y-1" {...props} />
+                  ),
+                  li: ({node, ...props}) => (
+                    <li className="text-gray-600" {...props} />
+                  ),
+                  code({node, inline, className, children, ...props}) {
+                    const match = /language-(\w+)/.exec(className || '')
+                    return !inline && match ? (
+                      <SyntaxHighlighter
+                        language={match[1]}
+                        style={oneDark}
+                        PreTag="div"
+                        className="rounded-md !bg-gray-800 !p-4"
+                      >
+                        {String(children).replace(/\n$/, '')}
+                      </SyntaxHighlighter>
+                    ) : (
+                      <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm text-gray-800" {...props}>
+                        {children}
+                      </code>
+                    )
+                  }
+                }}
+              >
+                {analysis}
+              </ReactMarkdown>
+            </article>
           </div>
         </div>
       )}
     </div>
   )
 }
+
+import { type CodeProps } from 'react-markdown/lib/ast-to-react'
