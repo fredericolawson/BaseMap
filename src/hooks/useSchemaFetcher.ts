@@ -16,6 +16,7 @@ export function useSchemaFetcher(initialPat: string, initialBaseId: string) {
   const [schema, setSchema] = useState<Schema | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [schemaLoaded, setSchemaLoaded] = useState(false)
 
   // Update state when props change
   useEffect(() => {
@@ -66,10 +67,11 @@ export function useSchemaFetcher(initialPat: string, initialBaseId: string) {
 
     if (!currentPat || !currentBaseId) {
       setError('Personal Access Token and Base ID are required')
-      return
+      return { error: 'Personal Access Token and Base ID are required' }
     }
 
     setLoading(true)
+    setSchemaLoaded(false)
     setError('')
 
     try {
@@ -87,14 +89,21 @@ export function useSchemaFetcher(initialPat: string, initialBaseId: string) {
           statusText: response.statusText,
           error: errorData
         })
-        throw new Error(ERROR_MESSAGES[response.status as keyof typeof ERROR_MESSAGES] || ERROR_MESSAGES.default)
+        const errorMessage = ERROR_MESSAGES[response.status as keyof typeof ERROR_MESSAGES] || ERROR_MESSAGES.default
+        setError(errorMessage)
+        return { error: errorMessage }
       }
 
       const tablesData: AirtableResponse = await response.json()
       const { tables, relationships } = processRelationships(tablesData.tables)
-      setSchema({ tables, relationships })
+      const processedSchema = { tables, relationships }
+      setSchema(processedSchema)
+      setSchemaLoaded(true)
+      return { schema: processedSchema }
     } catch (err) {
-      setError(err instanceof Error ? err.message : ERROR_MESSAGES.default)
+      const errorMessage = err instanceof Error ? err.message : ERROR_MESSAGES.default
+      setError(errorMessage)
+      return { error: errorMessage }
     } finally {
       setLoading(false)
     }
@@ -108,6 +117,7 @@ export function useSchemaFetcher(initialPat: string, initialBaseId: string) {
     error,
     setPat,
     setBaseId,
-    fetchSchema
+    fetchSchema,
+    schemaLoaded
   }
 }

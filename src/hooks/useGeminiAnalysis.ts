@@ -13,6 +13,7 @@ export function useGeminiAnalysis(initialApiKey: string) {
   const [analysis, setAnalysis] = useState<string | null>(null)
   const [analyzing, setAnalyzing] = useState(false)
   const [error, setError] = useState('')
+  const [analysisLoaded, setAnalysisLoaded] = useState(false)
 
   // Update state when props change
   useEffect(() => {
@@ -36,19 +37,20 @@ export function useGeminiAnalysis(initialApiKey: string) {
   }
 
   // Analyze schema with Gemini
-  const analyzeSchema = async (schema: Schema | null) => {
+  const analyzeSchema = async (schema: Schema | null, customPrompt?: string) => {
     if (!schema) {
       setError(ERROR_MESSAGES.noSchema)
-      return
+      return { error: ERROR_MESSAGES.noSchema }
     }
 
     const currentApiKey = geminiApiKey.trim()
     if (!currentApiKey) {
       setError(ERROR_MESSAGES.noApiKey)
-      return
+      return { error: ERROR_MESSAGES.noApiKey }
     }
 
     setAnalyzing(true)
+    setAnalysisLoaded(false)
     setError('')
     
     try {
@@ -58,9 +60,7 @@ export function useGeminiAnalysis(initialApiKey: string) {
 
       // Prepare the prompt
       const promptText = `
-        Analyze the following airtable base schema. Provide me an elegant and succinct explanation of the tables, 
-        how they relate to eachother, and their purpose. Focus on maximally meaningful insights for someone looking to
-        truly make sense of the base
+        ${customPrompt || "Analyze the following airtable base schema. Provide me an elegant and succinct explanation of the tables, how they relate to eachother, and their purpose. Focus on maximally meaningful insights for someone looking to truly make sense of the base"}
         
         Schema JSON:
         ${JSON.stringify(schema, null, 2)}
@@ -69,12 +69,16 @@ export function useGeminiAnalysis(initialApiKey: string) {
       // Generate content
       const result = await model.generateContent(promptText)
       const response = await result.response
-      setAnalysis(response.text())
+      const analysisText = response.text()
+      setAnalysis(analysisText)
+      setAnalysisLoaded(true)
+      return { analysis: analysisText }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : ERROR_MESSAGES.default
       console.error('Gemini analysis error:', errorMessage)
       setError(errorMessage)
       setAnalysis(null)
+      return { error: errorMessage }
     } finally {
       setAnalyzing(false)
     }

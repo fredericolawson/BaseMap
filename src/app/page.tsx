@@ -1,91 +1,55 @@
 'use client'
 
-import Header from './components/Header'
-import SchemaForm from './components/SchemaForm'
-import SchemaViewer from './components/SchemaViewer'
-import GeminiAnalysis from './components/GeminiAnalysis'
-import ErrorMessage from './components/ErrorMessage'
-import StorageManager from './components/StorageManager'
-import { useSchemaFetcher } from './hooks/useSchemaFetcher'
-import { useSchemaActions } from './hooks/useSchemaActions'
-import { useGeminiAnalysis } from './hooks/useGeminiAnalysis'
-import { useLocalStorage } from './hooks/useLocalStorage'
+import { useState } from 'react'
+
+import Header from '@/components/Header'
+import SchemaViewer from '@/components/SchemaViewer'
+import GeminiAnalysis from '@/components/GeminiAnalysis'
+import Manager from '@/components/Manager'
+import PurgeStorage from '@/components/PurgeStorage'
+import { useSchemaActions } from '@/hooks/useSchemaActions'
+import { Schema } from '@/types/schema'
 
 export default function Home() {
-  const {
-    pat,
-    baseId,
-    geminiApiKey,
-    setPat,
-    setBaseId,
-    setGeminiApiKey,
-    purgeStorage
-  } = useLocalStorage()
-
-  const {
-    schema,
-    loading,
-    error,
-    fetchSchema
-  } = useSchemaFetcher(pat, baseId)
+  // State for schema and analysis data
+  const [schema, setSchema] = useState<Schema | null>(null)
+  const [geminiAnalysis, setGeminiAnalysis] = useState<string | null>(null)
   
+  // Actions for schema data
   const { downloadJson, copyJson } = useSchemaActions(schema)
-  
-  const {
-    analysis,
-    analyzing,
-    error: geminiError,
-    analyzeSchema
-  } = useGeminiAnalysis(geminiApiKey)
 
   return (
     <main className="max-w-3xl mx-auto py-12 px-4 min-h-screen bg-gray-50">
       <Header />
 
       <section className="space-y-8">
-        <StorageManager
-          pat={pat}
-          baseId={baseId}
-          geminiApiKey={geminiApiKey}
-          onPurge={purgeStorage}
-        />
+        <PurgeStorage />
 
-        <SchemaForm
-          pat={pat}
-          baseId={baseId}
-          loading={loading}
+        <Manager
           schema={schema}
-          setPat={setPat}
-          setBaseId={setBaseId}
-          onSubmit={(e) => {
-            e.preventDefault()
-            fetchSchema()
-          }}
+          setSchema={setSchema}
+          geminiAnalysis={geminiAnalysis}
+          setGeminiAnalysis={setGeminiAnalysis}
         />
-
-        <div className="border-t border-gray-200 pt-8">
-          <GeminiAnalysis
-            schema={schema}
-            geminiApiKey={geminiApiKey}
-            analyzing={analyzing}
-            analysis={analysis}
-            error={geminiError}
-            setGeminiApiKey={setGeminiApiKey}
-            analyzeSchema={analyzeSchema}
-          />
-        </div>
-
-        {error && <ErrorMessage message={error} />}
+                {geminiAnalysis && (
+          <div className="border-t border-gray-200 pt-6">
+            <GeminiAnalysis
+              analysis={geminiAnalysis}
+            />
+          </div>
+        )}
 
         {schema && (
-
+          <div className="border-t border-gray-200 pt-6">
             <SchemaViewer
               schema={schema}
               onCopyJson={copyJson}
               onDownloadJson={downloadJson}
             />
-
+          </div>
         )}
+
+
       </section>
     </main>
   )
