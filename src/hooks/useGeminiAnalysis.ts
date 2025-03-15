@@ -60,7 +60,7 @@ export function useGeminiAnalysis(initialApiKey: string) {
 
       // Prepare the prompt
       const promptText = `
-        ${customPrompt || "Analyze the following airtable base schema. Provide me an elegant and succinct explanation of the tables, how they relate to eachother, and their purpose. Focus on maximally meaningful insights for someone looking to truly make sense of the base"}
+        ${customPrompt || "Analyse the following Airtable base schema. Provide me a very succinct explanation of the tables, how they relate to each other, and their purpose. recommend me improvements and simplifications to my schema, including fields that can be deleted. "}
         
         Schema JSON:
         ${JSON.stringify(schema, null, 2)}
