@@ -91,6 +91,7 @@ export function useGeminiAnalysis(initialApiKey: string) {
     analysis,
     analyzing,
     error,
-    analyzeSchema
+    analyzeSchema,
+    analysisLoaded
   }
 }
