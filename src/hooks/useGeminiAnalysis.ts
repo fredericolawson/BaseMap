@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Schema } from '../types/schema'
 import { GoogleGenerativeAI } from '@google/generative-ai'
+import { DEFAULT_GEMINI_PROMPT } from './useLocalStorage'
 
 const ERROR_MESSAGES = {
   noSchema: 'No schema available to analyze',
@@ -60,7 +61,7 @@ export function useGeminiAnalysis(initialApiKey: string) {
 
       // Prepare the prompt
       const promptText = `
-        ${customPrompt || "Analyse the following Airtable base schema. Provide me a very succinct explanation of the tables, how they relate to each other, and their purpose. recommend me improvements and simplifications to my schema, including fields that can be deleted. "}
+        ${customPrompt || DEFAULT_GEMINI_PROMPT}
         
         Schema JSON:
         ${JSON.stringify(schema, null, 2)}

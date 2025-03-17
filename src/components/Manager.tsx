@@ -124,19 +124,22 @@ function Airtable({
       <CardDescription>Manage your credentials for Airtable.</CardDescription>
     </CardHeader>
     <CardContent className="space-y-4">
-    <div className="space-y-2">
-      <Label htmlFor="baseId">Airtable Base ID</Label>
-      <Input
-        type="text"
-        id="baseId"
-        placeholder="app.."
-        autoComplete="off"
-        data-form-type="other"
-        value={baseId}
-        className={schemaLoaded ? 'bg-gray-100' : ''}
-        onChange={(e) => setBaseId(e.target.value)}
-      />
-    </div>
+      <div className="space-y-2">
+        <Label htmlFor="baseId">Airtable Base ID</Label>
+        <Input
+          type="text"
+          id="baseId"
+          placeholder="app.."
+          autoComplete="off"
+          data-form-type="other"
+          value={baseId}
+          className={schemaLoaded ? 'bg-gray-100' : ''}
+          onChange={(e) => setBaseId(e.target.value)}
+        />
+        <p className="text-sm text-gray-500">
+          Enter the ID of the base you want to analyse.  
+        </p>
+      </div>
       <div className="space-y-2">
         <Label htmlFor="pat">Airtable Personal Access Token</Label>
         <div className="flex space-x-2 items-center">
@@ -152,7 +155,8 @@ function Airtable({
           />
         </div>
         <p className="text-sm text-gray-500">
-          Click <a href="https://airtable.com/create/tokens" target="_blank" rel="noopener noreferrer" className="hover:underline">here</a> to get an Airtable Personal Access Token.
+          Click <a href="https://airtable.com/create/tokens" target="_blank" rel="noopener noreferrer" className="hover:underline text-gray-700">here</a> to get an Airtable Personal Access Token. 
+          Set its scope to <span className="bg-gray-100 text-gray-700 px-1">schema.bases:read</span> only. 
           Your token is stored locally in your browser and never sent to our server.
         </p>
       </div>
@@ -242,8 +246,11 @@ function Gemini({
         />
       </div>
       <p className="text-sm text-gray-500">
-        Click <a href="https://platform.gemini.com/" target="_blank" rel="noopener noreferrer" className="hover:underline">here</a> to get a Gemini API Key.
+        Click <a href="https://platform.gemini.com/" target="_blank" rel="noopener noreferrer" className="hover:underline text-gray-700">here</a> to get a Gemini API Key.
         Your key is stored locally in your browser and never sent to our server.
+      </p>
+      <p className="text-sm text-gray-500">
+        The default prompt will be sent to Gemini to analyse your base. Alternatively, modify it so it gives you an the kind of analysis you're looking for. 
       </p>
     </CardContent>
     <CardFooter className="mt-auto">
