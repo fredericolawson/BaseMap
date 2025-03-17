@@ -59,7 +59,7 @@ function Explainer() {
         <h2 className="text-md font-semibold mb-2">How it works</h2>
         <p className="text-gray-500 text-xs">
           BaseMap does two things: it extracts the schema of your Airtable base in JSON format, 
-          and it lets you send that JSON into Google Gemini with an analysis prompt of your choosing.
+          and it lets you send that schema file into Google Gemini with an analysis prompt of your choosing.
           Gemini is the chosen LLM for this task, as it has a very large context window (it can handle a large schema file).
         </p>
       </div>
