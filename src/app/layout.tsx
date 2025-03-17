@@ -5,14 +5,14 @@ import Link from 'next/link'
 import Header from '@/components/Header'
 
 export const metadata: Metadata = {
-  title: 'BaseMap - Airtable Schema Visualizer',
-  description: 'A simple Airtable schema visualization tool',
+  title: 'BaseMap - Airtable Schema Advisor',
+  description: 'Let AI analyse your schema and suggest improvements',
   icons: {
     icon: '/favicon.ico',
   },
   openGraph: {
-    title: 'BaseMap - Airtable Schema Visualizer',
-    description: 'A simple Airtable schema visualization tool',
+    title: 'BaseMap - Airtable Schema Advisor',
+    description: 'Let AI analyse your schema and suggest improvements',
     type: 'website',
     images: [{
       url: '/pencil.png',
@@ -23,8 +23,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary',  // using 'summary' since we're using an icon
-    title: 'BaseMap - Airtable Schema Visualizer',
-    description: 'A simple Airtable schema visualization tool',
+    title: 'BaseMap - Airtable Schema Advisor',
+    description: 'Let AI analyse your schema and suggest improvements',
     images: ['/pencil.png'],
   }
 }
