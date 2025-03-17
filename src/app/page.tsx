@@ -22,8 +22,8 @@ export default function Home() {
     <main className="max-w-3xl mx-auto py-8 px-4 bg-gray-50">
 
       <section className="space-y-8">
+        <Explainer />
         <PurgeStorage />
-
         <Manager
           schema={schema}
           setSchema={setSchema}
@@ -47,9 +47,31 @@ export default function Home() {
             />
           </div>
         )}
-
-
       </section>
     </main>
+  )
+}
+
+function Explainer() {
+  return (
+    <div className="flex flex-col md:flex-row gap-4">
+      <div className="border border-gray-200 rounded-lg p-4 w-full">
+        <h2 className="text-md font-semibold mb-2">How it works</h2>
+        <p className="text-gray-500 text-xs">
+          BaseMap does two things: it extracts the schema of your Airtable base in JSON format, 
+          and it lets you send that JSON into Google Gemini with an analysis prompt of your choosing.
+          Gemini is the chosen LLM for this task, as it has a very large context window (it can handle a large schema file).
+        </p>
+      </div>
+      <div className="border border-gray-200 rounded-lg p-4 w-full">
+        <h2 className="text-md font-semibold mb-2">Security</h2>
+        <p className="text-gray-500 text-xs">
+          BaseMap runs entirely in your browser. 
+          Your access tokens and schema file are used locally to make direct API calls to Airtable and Gemini - nothing is sent through to the server.
+          <br />
+          <a href="/security" className="hover:underline text-gray-700">Read more</a>
+        </p>
+      </div>
+    </div>
   )
 }
