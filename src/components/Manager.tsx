@@ -191,11 +191,30 @@ function Gemini({
 }) {
   const [isPromptDialogOpen, setIsPromptDialogOpen] = useState(false)
   const [tempPrompt, setTempPrompt] = useState(geminiPrompt)
+  const [timer, setTimer] = useState(0)
 
   // Update tempPrompt when geminiPrompt changes
   useEffect(() => {
     setTempPrompt(geminiPrompt)
   }, [geminiPrompt])
+
+  // Timer effect that counts up when analyzing is true
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+    
+    if (analyzing) {
+      setTimer(0); // Reset timer when analysis starts
+      interval = setInterval(() => {
+        setTimer(prevTimer => prevTimer + 1);
+      }, 1000);
+    } else if (interval) {
+      clearInterval(interval);
+    }
+    
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [analyzing]);
 
   const handleSavePrompt = () => {
     setGeminiPrompt(tempPrompt)
@@ -228,9 +247,9 @@ function Gemini({
       </p>
     </CardContent>
     <CardFooter className="mt-auto">
-      <div className="flex gap-2 ">
+      <div className="flex gap-2 w-full">
         <Button onClick={analyzeSchema} disabled={!schemaLoaded || analyzing}>
-          {analyzing ? "Analyzing..." : "Analyse Schema"}
+          {analyzing ? `Analyzing... (${timer}s)` : "Analyse Schema"}
         </Button>
         
         <Dialog open={isPromptDialogOpen} onOpenChange={setIsPromptDialogOpen}>

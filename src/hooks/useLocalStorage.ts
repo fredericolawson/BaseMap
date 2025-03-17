@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-const DEFAULT_GEMINI_PROMPT = "Analyze the following airtable base schema. Provide me an elegant and succinct explanation of the tables, how they relate to eachother, and their purpose. Focus on maximally meaningful insights for someone looking to truly make sense of the base"
+const DEFAULT_GEMINI_PROMPT = "You are an expert in elegant and simple Airtable base design. Analyse the following base schema. Provide me a succinct explanation of the tables, how they relate to each other, and their purpose. Recommend me enhancements and simplifications to my schema, focusing on fields which could be improved or duplication which can be removed"
 
 export function useLocalStorage() {
   const [mounted, setMounted] = useState(false)

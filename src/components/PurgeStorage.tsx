@@ -13,7 +13,7 @@ export default function PurgeStorage() {
         Clear Storage
       </Button>
       <p className="text-xs text-gray-400 mt-4 max-w-lg mx-auto">
-        Remember to clear your browser local storage when you are finished
+        Remember to click here to clear your browser local storage when you are finished
       </p>
     </div>
   )

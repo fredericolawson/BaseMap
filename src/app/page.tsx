@@ -19,8 +19,7 @@ export default function Home() {
   const { downloadJson, copyJson } = useSchemaActions(schema)
 
   return (
-    <main className="max-w-3xl mx-auto py-12 px-4 min-h-screen bg-gray-50">
-      <Header />
+    <main className="max-w-3xl mx-auto py-8 px-4 bg-gray-50">
 
       <section className="space-y-8">
         <PurgeStorage />
