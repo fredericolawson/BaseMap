@@ -1,0 +1,41 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Responsibility Boundary Principle
+
+## Core Philosophy
+Fix issues at their source rather than adding compensatory logic elsewhere. Each layer of your application should fulfill its responsibilities completely and correctly, with clear boundaries between them.
+
+## Guiding Principles
+
+1. **Source-of-Truth Repairs**
+   - Fix errors where they originate, not where they manifest
+   - Avoid creating "error laundering" patterns that mask the real source of problems
+
+2. **Clean Interface Boundaries**
+   - Client components should format data correctly before transmission
+   - Server actions should validate but not silently normalize malformed data
+   - Database models should enforce schema constraints, not work around them
+   - APIs should reject invalid inputs with clear error messages, not guess intent
+
+3. **Error Visibility Over Resilience**
+   - Prioritize making errors visible over making systems appear to work
+   - Fail fast and explicitly rather than carrying forward invalid states
+   - Error messages should point to the source of the issue, not just its symptoms
+
+4. **Testing at Boundaries**
+   - Test data transformations at layer boundaries
+   - Ensure types and validations exist where domains connect
+   - Document expected formats at each interface point
+
+## Anti-Patterns to Avoid
+
+- **Cascade Validation**: Adding the same validation in multiple places
+- **Silent Correction**: Fixing data format issues without alerting developers
+- **Defensive Programming Overuse**: Excessive null checks and type coercions that hide real issues
+- **Responsibility Leakage**: When one layer performs duties that belong to another
+
+This principle applies to all interactions in your system: component-to-action, client-to-server, service-to-database, and API-to-consumer relationships.
