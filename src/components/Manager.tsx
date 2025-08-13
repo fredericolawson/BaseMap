@@ -74,10 +74,7 @@ export default function Manager({
   const handleFetchSchema = async () => {
     const result = await fetchSchema();
     if (result?.schema) {
-      toast.success("Schema fetched successfully");
       setSchema(result.schema);
-    } else {
-      toast.error("Failed to fetch schema");
     }
   };
 

@@ -105,10 +105,18 @@ export function useSchemaFetcher(initialPat: string, initialBaseId: string) {
           statusText: response.statusText,
           error: errorData,
         });
-        const errorMessage =
+        const baseErrorMessage =
           ERROR_MESSAGES[response.status as keyof typeof ERROR_MESSAGES] ||
           ERROR_MESSAGES.default;
+        
+        // Include API error details if available
+        const apiErrorDetail = errorData?.error?.message || errorData?.error?.type;
+        const errorMessage = apiErrorDetail 
+          ? `${baseErrorMessage}: ${apiErrorDetail}`
+          : baseErrorMessage;
+        
         setError(errorMessage);
+        toast.error(errorMessage);
         return { error: errorMessage };
       }
 
@@ -121,8 +129,9 @@ export function useSchemaFetcher(initialPat: string, initialBaseId: string) {
       toast.success("Schema fetched successfully");
       return { schema: processedSchema };
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : ERROR_MESSAGES.default;
+      const errorMessage = err instanceof Error 
+        ? `${ERROR_MESSAGES.default}: ${err.message}`
+        : ERROR_MESSAGES.default;
       setError(errorMessage);
       toast.error(errorMessage);
       return { error: errorMessage };
