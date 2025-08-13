@@ -5,6 +5,7 @@ import {
   AirtableResponse,
   AirtableTable,
 } from "../types/schema";
+import { toast } from "sonner";
 
 const AIRTABLE_API_BASE = "https://api.airtable.com/v0/meta/bases";
 
@@ -117,11 +118,13 @@ export function useSchemaFetcher(initialPat: string, initialBaseId: string) {
 
       setSchema(processedSchema);
       setSchemaLoaded(true);
+      toast.success("Schema fetched successfully");
       return { schema: processedSchema };
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : ERROR_MESSAGES.default;
       setError(errorMessage);
+      toast.error(errorMessage);
       return { error: errorMessage };
     } finally {
       setLoading(false);

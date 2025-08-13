@@ -1,51 +1,53 @@
-import './globals.css'
-import type { Metadata } from 'next'
-import { Analytics } from "@vercel/analytics/react"
-import Link from 'next/link'
-import Header from '@/components/Header'
+import "./globals.css";
+import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
+import Link from "next/link";
+import Header from "@/components/Header";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: 'BaseMap - Airtable Schema Advisor',
-  description: 'Let AI analyse your schema and suggest improvements',
+  title: "BaseMap - Airtable Schema Advisor",
+  description: "Let AI analyse your schema and suggest improvements",
   icons: {
-    icon: '/favicon.ico',
+    icon: "/favicon.ico",
   },
   openGraph: {
-    title: 'BaseMap - Airtable Schema Advisor',
-    description: 'Let AI analyse your schema and suggest improvements',
-    type: 'website',
-    images: [{
-      url: '/pencil.png',
-      width: 512,  // adjust based on actual image dimensions
-      height: 512, // adjust based on actual image dimensions
-      alt: 'BaseMap Icon'
-    }],
+    title: "BaseMap - Airtable Schema Advisor",
+    description: "Let AI analyse your schema and suggest improvements",
+    type: "website",
+    images: [
+      {
+        url: "/pencil.png",
+        width: 512, // adjust based on actual image dimensions
+        height: 512, // adjust based on actual image dimensions
+        alt: "BaseMap Icon",
+      },
+    ],
   },
   twitter: {
-    card: 'summary',  // using 'summary' since we're using an icon
-    title: 'BaseMap - Airtable Schema Advisor',
-    description: 'Let AI analyse your schema and suggest improvements',
-    images: ['/pencil.png'],
-  }
-}
+    card: "summary", // using 'summary' since we're using an icon
+    title: "BaseMap - Airtable Schema Advisor",
+    description: "Let AI analyse your schema and suggest improvements",
+    images: ["/pencil.png"],
+  },
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
       <body className="bg-gray-50 flex flex-col min-h-screen">
         <Header />
-        <main className="flex-grow">
-          {children}
-        </main>
+        <main className="flex-grow">{children}</main>
         <Footer />
         <Analytics />
+        <Toaster />
       </body>
     </html>
-  )
+  );
 }
 
 function Footer() {
@@ -55,11 +57,14 @@ function Footer() {
         <div className="flex justify-center text-sm text-gray-500">
           <p>&copy; {new Date().getFullYear()} BaseMap</p>
           <div className="mx-2">•</div>
-          <Link href="/security" className="hover:text-gray-700 transition-colors">
+          <Link
+            href="/security"
+            className="hover:text-gray-700 transition-colors"
+          >
             Security
           </Link>
         </div>
       </div>
     </footer>
-  )
+  );
 }

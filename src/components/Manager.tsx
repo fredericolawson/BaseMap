@@ -20,13 +20,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog";
 
 import { Schema } from "@/types/schema";
 import { useSchemaFetcher } from "@/hooks/useSchemaFetcher";
 import { useGeminiAnalysis } from "@/hooks/useGeminiAnalysis";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { toast } from "sonner";
 
 export default function Manager({
   schema,
@@ -74,7 +74,10 @@ export default function Manager({
   const handleFetchSchema = async () => {
     const result = await fetchSchema();
     if (result?.schema) {
+      toast.success("Schema fetched successfully");
       setSchema(result.schema);
+    } else {
+      toast.error("Failed to fetch schema");
     }
   };
 
