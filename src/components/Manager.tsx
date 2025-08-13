@@ -33,11 +33,15 @@ export default function Manager({
   setSchema,
   geminiAnalysis,
   setGeminiAnalysis,
+  baseId: parentBaseId,
+  setBaseId: setParentBaseId,
 }: {
   schema: Schema | null;
   setSchema: (schema: Schema | null) => void;
   geminiAnalysis: string | null;
   setGeminiAnalysis: (analysis: string | null) => void;
+  baseId: string;
+  setBaseId: (baseId: string) => void;
 }) {
   // Use localStorage to persist credentials
   const {
@@ -60,6 +64,11 @@ export default function Manager({
   } = useSchemaFetcher(pat, baseId);
   const { analyzeSchema, analyzing, analysisLoaded } =
     useGeminiAnalysis(geminiApiKey);
+
+  // Sync baseId with parent component
+  useEffect(() => {
+    setParentBaseId(baseId);
+  }, [baseId, setParentBaseId]);
 
   // Handler for fetching schema
   const handleFetchSchema = async () => {

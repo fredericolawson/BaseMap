@@ -6,6 +6,7 @@ export interface Field {
   linkedTableId?: string
   prefersSingleRecordLink?: boolean
   isReversed?: boolean
+  isValid?: boolean
   choices?: Array<{
     id: string
     name: string
@@ -37,6 +38,7 @@ export interface AirtableFieldOptions {
   linkedTableId?: string
   prefersSingleRecordLink?: boolean
   isReversed?: boolean
+  isValid?: boolean
   choices?: Array<{
     id: string
     name: string
