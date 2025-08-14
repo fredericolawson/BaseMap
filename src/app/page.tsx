@@ -45,6 +45,7 @@ export default function Home() {
               schema={schema}
               onCopyJson={copyJson}
               onDownloadJson={downloadJson}
+              baseId={baseId}
             />
           </div>
         )}

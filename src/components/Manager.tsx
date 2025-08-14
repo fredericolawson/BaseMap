@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -6,12 +6,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Dialog,
   DialogContent,
@@ -20,13 +20,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 
-import { Schema } from "@/types/schema";
-import { useSchemaFetcher } from "@/hooks/useSchemaFetcher";
-import { useGeminiAnalysis } from "@/hooks/useGeminiAnalysis";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { toast } from "sonner";
+import { Schema } from '@/types/schema';
+import { useSchemaFetcher } from '@/hooks/useSchemaFetcher';
+import { useGeminiAnalysis } from '@/hooks/useGeminiAnalysis';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 export default function Manager({
   schema,
@@ -89,7 +88,7 @@ export default function Manager({
   };
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 justify-center">
       <Airtable
         pat={pat}
         setPat={setPat}
@@ -108,7 +107,6 @@ export default function Manager({
         schemaLoaded={schema !== null}
         analyzeSchema={handleAnalyzeSchema}
         analyzing={analyzing}
-        analysisLoaded={analysisLoaded}
       />
     </div>
   );
@@ -135,7 +133,7 @@ function Airtable({
     <Card className="w-1/2">
       <CardHeader>
         <CardTitle>Airtable</CardTitle>
-        <CardDescription>Manage your credentials for Airtable.</CardDescription>
+        <CardDescription>Set your Airtable credentials</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
@@ -147,8 +145,8 @@ function Airtable({
             autoComplete="off"
             data-form-type="other"
             value={baseId}
-            className={schemaLoaded ? "bg-gray-100" : ""}
-            onChange={(e) => setBaseId(e.target.value)}
+            className={schemaLoaded ? 'bg-gray-100' : ''}
+            onChange={e => setBaseId(e.target.value)}
           />
           <p className="text-sm text-gray-500">
             Enter the ID of the base you want to analyse.
@@ -164,12 +162,12 @@ function Airtable({
               autoComplete="off"
               data-form-type="other"
               value={pat}
-              className={schemaLoaded ? "bg-gray-100" : ""}
-              onChange={(e) => setPat(e.target.value)}
+              className={schemaLoaded ? 'bg-gray-100' : ''}
+              onChange={e => setPat(e.target.value)}
             />
           </div>
           <p className="text-sm text-gray-500">
-            Click{" "}
+            Click{' '}
             <a
               href="https://airtable.com/create/tokens"
               target="_blank"
@@ -177,11 +175,11 @@ function Airtable({
               className="hover:underline text-gray-700"
             >
               here
-            </a>{" "}
-            to get an Airtable Personal Access Token. Set its scope to{" "}
+            </a>{' '}
+            to get an Airtable Personal Access Token. Set its scope to{' '}
             <span className="bg-gray-100 text-gray-700 px-1">
               schema.bases:read
-            </span>{" "}
+            </span>{' '}
             only. Your token is stored locally in your browser and never sent to
             our server.
           </p>
@@ -190,7 +188,7 @@ function Airtable({
       <CardFooter>
         <div className="flex gap-2">
           <Button onClick={onFetchSchema} disabled={!baseId || !pat || loading}>
-            {loading ? "Loading..." : "Fetch Base Schema"}
+            {loading ? 'Loading...' : 'Fetch Base Schema'}
           </Button>
         </div>
       </CardFooter>
@@ -207,7 +205,6 @@ function Gemini({
   schemaLoaded,
   analyzeSchema,
   analyzing,
-  analysisLoaded,
 }: {
   geminiApiKey: string;
   setGeminiApiKey: (geminiApiKey: string) => void;
@@ -217,7 +214,6 @@ function Gemini({
   schemaLoaded: boolean;
   analyzeSchema: () => void;
   analyzing: boolean;
-  analysisLoaded: boolean;
 }) {
   const [isPromptDialogOpen, setIsPromptDialogOpen] = useState(false);
   const [tempPrompt, setTempPrompt] = useState(geminiPrompt);
@@ -235,7 +231,7 @@ function Gemini({
     if (analyzing) {
       setTimer(0); // Reset timer when analysis starts
       interval = setInterval(() => {
-        setTimer((prevTimer) => prevTimer + 1);
+        setTimer(prevTimer => prevTimer + 1);
       }, 1000);
     } else if (interval) {
       clearInterval(interval);
@@ -251,10 +247,11 @@ function Gemini({
     setIsPromptDialogOpen(false);
   };
 
+  if (!schemaLoaded) return null;
   return (
     <Card className="w-1/2">
       <CardHeader>
-        <CardTitle>Gemini</CardTitle>
+        <CardTitle>Analyse Schema</CardTitle>
         <CardDescription>Manage your credentials for Gemini.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -267,12 +264,12 @@ function Gemini({
             autoComplete="off"
             data-form-type="other"
             value={geminiApiKey}
-            className={schemaLoaded ? "bg-gray-100" : ""}
-            onChange={(e) => setGeminiApiKey(e.target.value)}
+            className={schemaLoaded ? 'bg-gray-100' : ''}
+            onChange={e => setGeminiApiKey(e.target.value)}
           />
         </div>
         <p className="text-sm text-gray-500">
-          Click{" "}
+          Click{' '}
           <a
             href="https://aistudio.google.com/app/apikey"
             target="_blank"
@@ -280,7 +277,7 @@ function Gemini({
             className="hover:underline text-gray-700"
           >
             here
-          </a>{" "}
+          </a>{' '}
           to get a Gemini API Key. Your key is stored locally in your browser
           and never sent to our server.
         </p>
@@ -293,7 +290,7 @@ function Gemini({
       <CardFooter className="mt-auto">
         <div className="flex gap-2 w-full">
           <Button onClick={analyzeSchema} disabled={!schemaLoaded || analyzing}>
-            {analyzing ? `Analyzing... (${timer}s)` : "Analyse Schema"}
+            {analyzing ? `Analyzing... (${timer}s)` : 'Analyse Schema'}
           </Button>
 
           <Dialog
