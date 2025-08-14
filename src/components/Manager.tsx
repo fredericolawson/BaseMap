@@ -1,26 +1,11 @@
 import { useState, useEffect } from 'react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 import { Schema } from '@/types/schema';
 import { useSchemaFetcher } from '@/hooks/useSchemaFetcher';
@@ -43,26 +28,12 @@ export default function Manager({
   setBaseId: (baseId: string) => void;
 }) {
   // Use localStorage to persist credentials
-  const {
-    pat,
-    setPat,
-    baseId,
-    setBaseId,
-    geminiApiKey,
-    setGeminiApiKey,
-    geminiPrompt,
-    setGeminiPrompt,
-    resetGeminiPrompt,
-  } = useLocalStorage();
+  const { pat, setPat, baseId, setBaseId, geminiApiKey, setGeminiApiKey, geminiPrompt, setGeminiPrompt, resetGeminiPrompt } =
+    useLocalStorage();
 
   // Use hooks for fetching data
-  const {
-    fetchSchema,
-    loading: schemaLoading,
-    schemaLoaded,
-  } = useSchemaFetcher(pat, baseId);
-  const { analyzeSchema, analyzing, analysisLoaded } =
-    useGeminiAnalysis(geminiApiKey);
+  const { fetchSchema, loading: schemaLoading, schemaLoaded } = useSchemaFetcher(pat, baseId);
+  const { analyzeSchema, analyzing, analysisLoaded } = useGeminiAnalysis(geminiApiKey);
 
   // Sync baseId with parent component
   useEffect(() => {
@@ -148,9 +119,7 @@ function Airtable({
             className={schemaLoaded ? 'bg-gray-100' : ''}
             onChange={e => setBaseId(e.target.value)}
           />
-          <p className="text-sm text-gray-500">
-            Enter the ID of the base you want to analyse.
-          </p>
+          <p className="text-sm text-gray-500">Enter the ID of the base you want to analyse.</p>
         </div>
         <div className="space-y-2">
           <Label htmlFor="pat">Airtable Personal Access Token</Label>
@@ -177,11 +146,8 @@ function Airtable({
               here
             </a>{' '}
             to get an Airtable Personal Access Token. Set its scope to{' '}
-            <span className="bg-gray-100 text-gray-700 px-1">
-              schema.bases:read
-            </span>{' '}
-            only. Your token is stored locally in your browser and never sent to
-            our server.
+            <span className="bg-gray-100 text-gray-700 px-1">schema.bases:read</span> only. Your token is stored locally in your browser and
+            never sent to our server.
           </p>
         </div>
       </CardContent>
@@ -278,12 +244,10 @@ function Gemini({
           >
             here
           </a>{' '}
-          to get a Gemini API Key. Your key is stored locally in your browser
-          and never sent to our server.
+          to get a Gemini API Key. Your key is stored locally in your browser and never sent to our server.
         </p>
         <p className="text-sm text-gray-500">
-          The default prompt will be sent to Gemini to analyse your base.
-          Alternatively, modify it so it gives you an the kind of analysis
+          The default prompt will be sent to Gemini to analyse your base. Alternatively, modify it so it gives you an the kind of analysis
           you're looking for.
         </p>
       </CardContent>
@@ -293,10 +257,7 @@ function Gemini({
             {analyzing ? `Analyzing... (${timer}s)` : 'Analyse Schema'}
           </Button>
 
-          <Dialog
-            open={isPromptDialogOpen}
-            onOpenChange={setIsPromptDialogOpen}
-          >
+          <Dialog open={isPromptDialogOpen} onOpenChange={setIsPromptDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="outline">Modify Gemini Prompt</Button>
             </DialogTrigger>
@@ -304,22 +265,17 @@ function Gemini({
               <DialogHeader>
                 <DialogTitle>Customize Gemini Prompt</DialogTitle>
                 <DialogDescription>
-                  Modify the prompt used to analyze your schema with Gemini.
-                  Your changes will be saved to your browser's local storage.
+                  Modify the prompt used to analyze your schema with Gemini. Your changes will be saved to your browser's local storage.
                 </DialogDescription>
               </DialogHeader>
               <div className="py-4">
                 <Textarea
                   value={tempPrompt}
-                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    setTempPrompt(e.target.value)
-                  }
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setTempPrompt(e.target.value)}
                   className="min-h-[150px]"
                   placeholder="Enter your custom prompt here..."
                 />
-                <p className="text-xs text-gray-500 mt-2">
-                  The schema JSON will be appended to this prompt automatically.
-                </p>
+                <p className="text-xs text-gray-500 mt-2">The schema JSON will be appended to this prompt automatically.</p>
               </div>
               <DialogFooter>
                 <Button variant="outline" onClick={resetGeminiPrompt}>
