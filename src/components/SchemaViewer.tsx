@@ -71,12 +71,6 @@ export default function SchemaViewer({ schema, onCopyJson, onDownloadJson, baseI
             </AccordionTrigger>
             <AccordionContent className="px-6">
               <div className="space-y-6">
-                <div className="flex justify-end">
-                  <Button onClick={() => sortFieldsByType(table.id)} variant="secondary" size="sm">
-                    {sortedTables[table.id] ? 'Original Order' : 'Default Sort'}
-                  </Button>
-                </div>
-
                 <ShadTable>
                   <TableHeader>
                     <TableRow>
@@ -94,22 +88,20 @@ export default function SchemaViewer({ schema, onCopyJson, onDownloadJson, baseI
                           return typeCompare !== 0 ? typeCompare : a.name.localeCompare(b.name);
                         })
                     ).map(field => (
-                      <TableRow key={field.id}>
-                        <TableCell className="font-medium">{field.name}</TableCell>
+                      <TableRow key={field.id} className="text-xs">
+                        <TableCell className="">{field.name}</TableCell>
                         <TableCell>
                           <span className="px-2 py-1 text-xs text-gray-800 bg-gray-100 rounded-full">{field.type}</span>
                         </TableCell>
                         <TableCell>
-                          <Button variant="secondary" size="sm" className="w-fulltext-xs mr-2 text-xs" asChild>
-                            <Link
-                              href={`https://airtable.com/${baseId}/${table.id}/?blocks=hide&fieldManager=true`}
-                              target="_blank"
-                              className="flex items-center gap-1"
-                            >
-                              <ExternalLink size={8} />
-                              Edit
-                            </Link>
-                          </Button>
+                          <Link
+                            href={`https://airtable.com/${baseId}/${table.id}/?blocks=hide&fieldManager=true`}
+                            target="_blank"
+                            className="flex items-center gap-1 text-xs bg-secondary text-secondary-foreground px-2 py-1.5 rounded-md hover:bg-secondary/80"
+                          >
+                            <ExternalLink size={12} />
+                            Edit
+                          </Link>
                         </TableCell>
                         <TableCell className="text-gray-500">{field.description || '—'}</TableCell>
                       </TableRow>
