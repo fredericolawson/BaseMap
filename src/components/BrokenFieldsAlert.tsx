@@ -1,6 +1,7 @@
 import { AlertTriangle, ExternalLink } from 'lucide-react';
 import { Schema } from '@/types/schema';
 import { cn } from '@/lib/utils';
+import { Button } from './ui/button';
 
 interface BrokenFieldsAlertProps {
   schema: Schema;
@@ -27,12 +28,12 @@ export default function BrokenFieldsAlert({ schema, baseId }: BrokenFieldsAlertP
   }
 
   return (
-    <div className={cn('bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6', 'shadow-sm')}>
+    <div className={cn('bg-card border rounded-lg p-4 mb-6', 'shadow-sm')}>
       <div className="flex items-start gap-3">
-        <AlertTriangle className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+        <AlertTriangle className="h-5 w-5 mt-0.5 flex-shrink-0" />
         <div className="flex-1">
-          <h3 className="text-sm font-semibold text-blue-800 mb-2">Configuration Issues Detected</h3>
-          <p className="text-xs text-blue-700 mb-3">
+          <h3 className="mb-2">Configuration Issues Detected</h3>
+          <p className="text-xs mb-3">
             {brokenFields.length} field{brokenFields.length !== 1 ? 's' : ''} in your Airtable base
             {brokenFields.length === 1 ? ' has' : ' have'} invalid configuration that may affect functionality:
           </p>
@@ -41,30 +42,21 @@ export default function BrokenFieldsAlert({ schema, baseId }: BrokenFieldsAlertP
               const airtableUrl = `https://airtable.com/${baseId}/${field.tableId}/?blocks=hide&fieldManager=true`;
 
               return (
-                <div key={`${field.tableId}-${field.fieldId}`} className="bg-white rounded-md px-3 py-2 border border-blue-100">
+                <div key={`${field.tableId}-${field.fieldId}`} className="bg-accent/20 rounded-md px-3 py-2 border border-accent">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-medium text-gray-900">{field.tableName}</span>
-                      <span className="text-xs text-gray-400">•</span>
-                      <span className="text-xs text-gray-700">{field.fieldName}</span>
+                      <span className="text-xs font-medium">{field.tableName}</span>
+                      <span className="text-xs">•</span>
+                      <span className="text-xs">{field.fieldName}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full">{field.fieldType}</span>
-                      <a
-                        href={airtableUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={cn(
-                          'inline-flex items-center gap-1 px-2 py-1',
-                          'text-xs text-blue-700 hover:text-blue-800',
-                          'bg-blue-50 hover:bg-blue-100',
-                          'border border-blue-200 hover:border-blue-300',
-                          'rounded-md transition-colors'
-                        )}
-                      >
-                        <ExternalLink className="h-3 w-3" />
-                        Fix in Airtable
-                      </a>
+                      <span className="text-xs px-2 py-0.5 bg-secondary rounded-full">{field.fieldType}</span>
+                      <Button variant="outline" size="sm" asChild>
+                        <a href={airtableUrl} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="h-3 w-3" />
+                          Fix in Airtable
+                        </a>
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -72,9 +64,7 @@ export default function BrokenFieldsAlert({ schema, baseId }: BrokenFieldsAlertP
             })}
           </div>
           <div className="mt-3 pt-3 border-t border-blue-200">
-            <p className="text-xs text-blue-600">
-              💡 These issues should be resolved in your Airtable base to ensure proper functionality.
-            </p>
+            <p className="text-xs">💡 These issues should be resolved in your Airtable base to ensure proper functionality.</p>
           </div>
         </div>
       </div>

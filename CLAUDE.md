@@ -12,6 +12,8 @@ BaseMap is a client-side Next.js application that analyzes Airtable base schemas
 - `npm run build`: Build production application
 - `npm run start`: Start production server
 - `npm run lint`: Run ESLint for code quality checks
+- `npm run format`: Format code with Prettier
+- `npm run format:check`: Check code formatting without changes
 
 ## Architecture Overview
 
@@ -72,3 +74,10 @@ State management and API interactions are handled through specialized hooks:
 - Uses Next.js 15 with App Router
 - React 19 for component development
 - Zod for runtime type validation
+- Prettier for code formatting
+
+## Development Philosophy
+
+- **Responsibility Boundary Principle**: Fix issues at their source rather than adding compensatory logic elsewhere
+- **Clean Interface Boundaries**: Each layer should fulfill its responsibilities completely with clear boundaries
+- **Error Visibility**: Prioritize making errors visible over making systems appear to work

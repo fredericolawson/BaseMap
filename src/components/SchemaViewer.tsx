@@ -20,9 +20,9 @@ function TableRelationship({ relationship, table, getTableById, isSource }: Tabl
   if (!otherTable) return null;
 
   return (
-    <div className="text-xs bg-gray-50 p-2 rounded-md border border-gray-200 hover:bg-gray-100 transition-colors">
-      <span className="text-gray-600">
-        {isSource ? 'Links to' : 'Linked from'} <span className="font-medium">{otherTable.name}</span>
+    <div className="text-xs bg-muted p-2 rounded-md border border-border hover:bg-muted/80 transition-colors">
+      <span className="text-muted-foreground">
+        {isSource ? 'Links to' : 'Linked from'} <span className="font-medium text-foreground">{otherTable.name}</span>
         {' via '}
         {isSource
           ? table.fields.find(f => f.id === relationship.fieldId)?.name
@@ -35,23 +35,14 @@ function TableRelationship({ relationship, table, getTableById, isSource }: Tabl
 
 interface SchemaViewerProps {
   schema: Schema;
-  onCopyJson: () => void;
-  onDownloadJson: () => void;
   baseId: string;
 }
 
-export default function SchemaViewer({ schema, onCopyJson, onDownloadJson, baseId }: SchemaViewerProps) {
+export default function SchemaViewer({ schema, baseId }: SchemaViewerProps) {
   const getTableById = (id: string) => schema.tables.find(table => table.id === id);
   const [sortedTables, setSortedTables] = useState<Record<string, boolean>>({});
   const [searchTerm, setSearchTerm] = useState('');
   const [activeSearchFilter, setActiveSearchFilter] = useState('');
-
-  const sortFieldsByType = (tableId: string) => {
-    setSortedTables(prev => ({
-      ...prev,
-      [tableId]: !prev[tableId],
-    }));
-  };
 
   const handleSearch = () => {
     setActiveSearchFilter(searchTerm);
@@ -64,15 +55,13 @@ export default function SchemaViewer({ schema, onCopyJson, onDownloadJson, baseI
 
   const getFilteredSchema = (): Schema => {
     if (!activeSearchFilter) return schema;
-    
+
     return {
       ...schema,
       tables: schema.tables.map(table => ({
         ...table,
-        fields: table.fields.filter(field =>
-          field.name.toLowerCase().includes(activeSearchFilter.toLowerCase())
-        )
-      }))
+        fields: table.fields.filter(field => field.name.toLowerCase().includes(activeSearchFilter.toLowerCase())),
+      })),
     };
   };
 
@@ -87,7 +76,7 @@ export default function SchemaViewer({ schema, onCopyJson, onDownloadJson, baseI
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     const timestamp = new Date().toISOString().split('T')[0];
-    
+
     link.href = url;
     link.download = `basemap-schema-${timestamp}.json`;
     document.body.appendChild(link);
@@ -99,17 +88,17 @@ export default function SchemaViewer({ schema, onCopyJson, onDownloadJson, baseI
   return (
     <div className="space-y-6">
       <div className="flex justify-center space-x-4">
-        <Button onClick={handleCopyJson} variant="outline">
+        <Button onClick={handleCopyJson} variant="secondary">
           Copy as JSON{activeSearchFilter && ' (filtered)'}
         </Button>
-        <Button onClick={handleDownloadJson} variant="outline">
+        <Button onClick={handleDownloadJson} variant="secondary">
           Download as JSON{activeSearchFilter && ' (filtered)'}
         </Button>
       </div>
 
       <div className="flex gap-2">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
             placeholder="Search fields..."
             value={searchTerm}
@@ -118,55 +107,55 @@ export default function SchemaViewer({ schema, onCopyJson, onDownloadJson, baseI
             onKeyDown={e => e.key === 'Enter' && handleSearch()}
           />
         </div>
-        <Button onClick={handleSearch} variant="outline">
+        <Button onClick={handleSearch} variant="default">
           Search
         </Button>
         {activeSearchFilter && (
-          <Button onClick={clearSearch} variant="outline">
+          <Button onClick={clearSearch} variant="secondary">
             Clear
           </Button>
         )}
       </div>
 
-      <Accordion type="multiple" className="w-full bg-white rounded-lg border">
+      <Accordion type="multiple" className="w-full bg-card rounded-lg border">
         {schema.tables.map(table => {
-          const filteredFields = table.fields.filter(field => 
-            activeSearchFilter === '' || field.name.toLowerCase().includes(activeSearchFilter.toLowerCase())
+          const filteredFields = table.fields.filter(
+            field => activeSearchFilter === '' || field.name.toLowerCase().includes(activeSearchFilter.toLowerCase())
           );
-          
+
           return (
             <AccordionItem key={table.id} value={table.id}>
               <AccordionTrigger className="px-6">
                 <div className="flex justify-between items-center w-full pr-4">
-                  <h2 className="text-md font-semibold text-gray-900">{table.name}</h2>
-                  <span className="text-sm text-gray-500">
+                  <h2 className="text-md font-semibold text-card-foreground">{table.name}</h2>
+                  <span className="text-sm text-accent">
                     {activeSearchFilter ? `${filteredFields.length} of ${table.fields.length}` : `${table.fields.length}`} fields
                   </span>
                 </div>
               </AccordionTrigger>
-            <AccordionContent className="px-6">
-              <div className="space-y-4">
-                <ShadTable>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Field Name</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Edit</TableHead>
-                      <TableHead>Description</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {(sortedTables[table.id]
-                      ? filteredFields
-                      : [...filteredFields].sort((a, b) => {
-                          const typeCompare = a.type.localeCompare(b.type);
-                          return typeCompare !== 0 ? typeCompare : a.name.localeCompare(b.name);
-                        })
-                    ).map(field => (
+              <AccordionContent className="px-6">
+                <div className="space-y-4">
+                  <ShadTable>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Field Name</TableHead>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Edit</TableHead>
+                        <TableHead>Description</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {(sortedTables[table.id]
+                        ? filteredFields
+                        : [...filteredFields].sort((a, b) => {
+                            const typeCompare = a.type.localeCompare(b.type);
+                            return typeCompare !== 0 ? typeCompare : a.name.localeCompare(b.name);
+                          })
+                      ).map(field => (
                         <TableRow key={field.id} className="text-xs">
                           <TableCell className="">{field.name}</TableCell>
                           <TableCell>
-                            <span className="px-2 py-1 text-xs text-gray-800 bg-gray-100 rounded-full">{field.type}</span>
+                            <span className="px-2 py-1 text-xs text-secondary-foreground bg-secondary rounded-full">{field.type}</span>
                           </TableCell>
                           <TableCell>
                             <Link
@@ -178,29 +167,29 @@ export default function SchemaViewer({ schema, onCopyJson, onDownloadJson, baseI
                               Edit
                             </Link>
                           </TableCell>
-                          <TableCell className="text-gray-500">{field.description || '—'}</TableCell>
+                          <TableCell className="text-muted-foreground">{field.description || '—'}</TableCell>
                         </TableRow>
                       ))}
-                  </TableBody>
-                </ShadTable>
-                <Separator />
-                <div className="text-center text-sm font-semibold">Table Relationships</div>
-                <div className="space-y-2">
-                  {schema.relationships
-                    .filter(rel => rel.from === table.id || rel.to === table.id)
-                    .map(rel => (
-                      <TableRelationship
-                        key={rel.fieldId}
-                        relationship={rel}
-                        table={table}
-                        getTableById={getTableById}
-                        isSource={rel.from === table.id}
-                      />
-                    ))}
+                    </TableBody>
+                  </ShadTable>
+                  <Separator />
+                  <div className="text-center text-sm font-semibold">Table Relationships</div>
+                  <div className="space-y-2">
+                    {schema.relationships
+                      .filter(rel => rel.from === table.id || rel.to === table.id)
+                      .map(rel => (
+                        <TableRelationship
+                          key={rel.fieldId}
+                          relationship={rel}
+                          table={table}
+                          getTableById={getTableById}
+                          isSource={rel.from === table.id}
+                        />
+                      ))}
+                  </div>
                 </div>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
+              </AccordionContent>
+            </AccordionItem>
           );
         })}
       </Accordion>
