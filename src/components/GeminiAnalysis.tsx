@@ -1,39 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { Schema } from '../types/schema';
-import ErrorMessage from './ErrorMessage';
-import { Download, Copy, Loader2 } from 'lucide-react';
+import { Download, Copy } from 'lucide-react';
 import { Button } from './ui/button';
-
-const DEFAULT_PROMPT =
-  'Analyze the provided schema and provide a detailed explanation of the tables, how they relate to each other, and their purpose.';
+import { copyToClipboard, downloadAsText, generateTimestampedFilenameDetailed } from '../utils/fileOperations';
 
 interface GeminiAnalysisProps {
   analysis: string | null;
 }
 
-function useAnalysisTimer(analyzing: boolean) {
-  const [seconds, setSeconds] = useState(0);
-
-  useEffect(() => {
-    if (!analyzing) {
-      setSeconds(0);
-      return;
-    }
-
-    const timer = setInterval(() => {
-      setSeconds(prev => prev + 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [analyzing]);
-
-  return seconds;
-}
 
 export default function GeminiAnalysis({ analysis }: GeminiAnalysisProps) {
   return (
@@ -49,16 +26,8 @@ export default function GeminiAnalysis({ analysis }: GeminiAnalysisProps) {
                 variant="secondary"
                 onClick={() => {
                   if (analysis) {
-                    const blob = new Blob([analysis], { type: 'text/markdown' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-                    a.href = url;
-                    a.download = `schema-analysis-${timestamp}.md`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
+                    const filename = generateTimestampedFilenameDetailed('schema-analysis', 'md');
+                    downloadAsText(analysis, filename, 'text/markdown');
                   }
                 }}
               >
@@ -69,7 +38,7 @@ export default function GeminiAnalysis({ analysis }: GeminiAnalysisProps) {
                 variant="secondary"
                 onClick={() => {
                   if (analysis) {
-                    navigator.clipboard.writeText(analysis);
+                    copyToClipboard(analysis);
                   }
                 }}
               >
@@ -82,12 +51,12 @@ export default function GeminiAnalysis({ analysis }: GeminiAnalysisProps) {
             <article className="prose prose-foreground prose-sm max-w-none ">
               <ReactMarkdown
                 components={{
-                  h1: ({ node, ...props }) => <h1 className="text-2xl font-semibold mb-4 pb-2 border-b border-gray-200" {...props} />,
-                  h2: ({ node, ...props }) => <h2 className="text-xl font-medium mt-6 mb-3" {...props} />,
-                  h3: ({ node, ...props }) => <h3 className="text-lg font-medium mt-4 mb-2" {...props} />,
-                  p: ({ node, ...props }) => <p className="leading-relaxed mb-4" {...props} />,
-                  ul: ({ node, ...props }) => <ul className="list-disc pl-6 mb-4 space-y-1" {...props} />,
-                  li: ({ node, ...props }) => <li className="" {...props} />,
+                  h1: ({ ...props }) => <h1 className="text-2xl font-semibold mb-4 pb-2 border-b border-gray-200" {...props} />,
+                  h2: ({ ...props }) => <h2 className="text-xl font-medium mt-6 mb-3" {...props} />,
+                  h3: ({ ...props }) => <h3 className="text-lg font-medium mt-4 mb-2" {...props} />,
+                  p: ({ ...props }) => <p className="leading-relaxed mb-4" {...props} />,
+                  ul: ({ ...props }) => <ul className="list-disc pl-6 mb-4 space-y-1" {...props} />,
+                  li: ({ ...props }) => <li className="" {...props} />,
                   code: ({ children, className, ...props }) => {
                     const match = /language-(\w+)/.exec(className || '');
                     if (match) {

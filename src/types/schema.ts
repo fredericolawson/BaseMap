@@ -21,11 +21,13 @@ export interface Table {
   fields: Field[]
 }
 
+import { RelationshipType } from '../constants/fieldTypes';
+
 export interface Relationship {
   from: string
   to: string
   fieldId: string
-  type: 'oneToMany' | 'manyToOne' | 'oneToOne'
+  type: RelationshipType
 }
 
 export interface Schema {

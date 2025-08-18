@@ -1,23 +1,15 @@
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-
+import { useEffect } from 'react';
 import { Schema } from '@/types/schema';
 import { useSchemaFetcher } from '@/hooks/useSchemaFetcher';
 import { useGeminiAnalysis } from '@/hooks/useGeminiAnalysis';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import AirtableCredentials from './AirtableCredentials';
+import GeminiCredentials from './GeminiCredentials';
 
 export default function Manager({
   schema,
   setSchema,
-  geminiAnalysis,
   setGeminiAnalysis,
-  baseId: parentBaseId,
   setBaseId: setParentBaseId,
 }: {
   schema: Schema | null;
@@ -33,7 +25,7 @@ export default function Manager({
 
   // Use hooks for fetching data
   const { fetchSchema, loading: schemaLoading, schemaLoaded } = useSchemaFetcher(pat, baseId);
-  const { analyzeSchema, analyzing, analysisLoaded } = useGeminiAnalysis(geminiApiKey);
+  const { analyzeSchema, analyzing } = useGeminiAnalysis(geminiApiKey);
 
   // Sync baseId with parent component
   useEffect(() => {
@@ -60,7 +52,7 @@ export default function Manager({
 
   return (
     <div className="flex gap-4 justify-center">
-      <Airtable
+      <AirtableCredentials
         pat={pat}
         setPat={setPat}
         baseId={baseId}
@@ -69,7 +61,7 @@ export default function Manager({
         loading={schemaLoading}
         schemaLoaded={schemaLoaded}
       />
-      <Gemini
+      <GeminiCredentials
         geminiApiKey={geminiApiKey}
         setGeminiApiKey={setGeminiApiKey}
         geminiPrompt={geminiPrompt}
@@ -80,208 +72,5 @@ export default function Manager({
         analyzing={analyzing}
       />
     </div>
-  );
-}
-
-function Airtable({
-  pat,
-  setPat,
-  baseId,
-  setBaseId,
-  onFetchSchema,
-  loading,
-  schemaLoaded,
-}: {
-  pat: string;
-  setPat: (pat: string) => void;
-  baseId: string;
-  setBaseId: (baseId: string) => void;
-  onFetchSchema: () => void;
-  loading: boolean;
-  schemaLoaded: boolean;
-}) {
-  return (
-    <Card className="w-1/2">
-      <CardHeader>
-        <CardTitle>Airtable</CardTitle>
-        <CardDescription>Set your Airtable credentials</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="baseId">Airtable Base ID</Label>
-          <Input
-            type="text"
-            id="baseId"
-            placeholder="app.."
-            autoComplete="off"
-            data-form-type="other"
-            value={baseId}
-            className={schemaLoaded ? 'border-accent bg-accent/20' : ''}
-            onChange={e => setBaseId(e.target.value)}
-          />
-          <p className="text-sm text-muted-foreground">Enter the ID of the base you want to analyse.</p>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="pat">Airtable Personal Access Token</Label>
-          <div className="flex space-x-2 items-center">
-            <Input
-              type="text"
-              id="pat"
-              placeholder="pat..."
-              autoComplete="off"
-              data-form-type="other"
-              value={pat}
-              className={schemaLoaded ? 'border-accent bg-accent/20' : ''}
-              onChange={e => setPat(e.target.value)}
-            />
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Click{' '}
-            <a
-              href="https://airtable.com/create/tokens"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline text-muted-foreground"
-            >
-              here
-            </a>{' '}
-            to get an Airtable Personal Access Token. Set its scope to{' '}
-            <span className=" text-muted-foreground px-1">schema.bases:read</span> only. Your token is stored locally in your browser and
-            never sent to our server.
-          </p>
-        </div>
-      </CardContent>
-      <CardFooter>
-        <div className="flex gap-2">
-          <Button onClick={onFetchSchema} disabled={!baseId || !pat || loading}>
-            {loading ? 'Loading...' : 'Fetch Base Schema'}
-          </Button>
-        </div>
-      </CardFooter>
-    </Card>
-  );
-}
-
-function Gemini({
-  geminiApiKey,
-  setGeminiApiKey,
-  geminiPrompt,
-  setGeminiPrompt,
-  resetGeminiPrompt,
-  schemaLoaded,
-  analyzeSchema,
-  analyzing,
-}: {
-  geminiApiKey: string;
-  setGeminiApiKey: (geminiApiKey: string) => void;
-  geminiPrompt: string;
-  setGeminiPrompt: (prompt: string) => void;
-  resetGeminiPrompt: () => void;
-  schemaLoaded: boolean;
-  analyzeSchema: () => void;
-  analyzing: boolean;
-}) {
-  const [isPromptDialogOpen, setIsPromptDialogOpen] = useState(false);
-  const [tempPrompt, setTempPrompt] = useState(geminiPrompt);
-  const [timer, setTimer] = useState(0);
-
-  // Update tempPrompt when geminiPrompt changes
-  useEffect(() => {
-    setTempPrompt(geminiPrompt);
-  }, [geminiPrompt]);
-
-  // Timer effect that counts up when analyzing is true
-  useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
-
-    if (analyzing) {
-      setTimer(0); // Reset timer when analysis starts
-      interval = setInterval(() => {
-        setTimer(prevTimer => prevTimer + 1);
-      }, 1000);
-    } else if (interval) {
-      clearInterval(interval);
-    }
-
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [analyzing]);
-
-  const handleSavePrompt = () => {
-    setGeminiPrompt(tempPrompt);
-    setIsPromptDialogOpen(false);
-  };
-
-  if (!schemaLoaded) return null;
-  return (
-    <Card className="w-1/2">
-      <CardHeader>
-        <CardTitle>Analyse Schema</CardTitle>
-        <CardDescription>Manage your credentials for Gemini.</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="geminiApiKey">Gemini API Key</Label>
-          <Input
-            type="text"
-            id="geminiApiKey"
-            placeholder="gemini..."
-            autoComplete="off"
-            data-form-type="other"
-            value={geminiApiKey}
-            className={schemaLoaded ? 'border-accent bg-accent/20' : ''}
-            onChange={e => setGeminiApiKey(e.target.value)}
-          />
-        </div>
-        <p className="text-sm text-muted-foreground">
-          Click{' '}
-          <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="hover:underline">
-            here
-          </a>{' '}
-          to get a Gemini API Key. Your key is stored locally in your browser and never sent to our server.
-        </p>
-        <p className="text-sm text-muted-foreground">
-          The default prompt will be sent to Gemini to analyse your base. Alternatively, modify it so it gives you an the kind of analysis
-          you're looking for.
-        </p>
-      </CardContent>
-      <CardFooter className="mt-auto">
-        <div className="flex gap-2 w-full">
-          <Button onClick={analyzeSchema} disabled={!schemaLoaded || analyzing}>
-            {analyzing ? `Analyzing... (${timer}s)` : 'Analyse Schema'}
-          </Button>
-
-          <Dialog open={isPromptDialogOpen} onOpenChange={setIsPromptDialogOpen}>
-            <DialogTrigger asChild>
-              <Button variant="secondary">Modify Gemini Prompt</Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px]">
-              <DialogHeader>
-                <DialogTitle>Customize Gemini Prompt</DialogTitle>
-                <DialogDescription>
-                  Modify the prompt used to analyze your schema with Gemini. Your changes will be saved to your browser's local storage.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="py-4">
-                <Textarea
-                  value={tempPrompt}
-                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setTempPrompt(e.target.value)}
-                  className="min-h-[150px]"
-                  placeholder="Enter your custom prompt here..."
-                />
-                <p className="text-xs text-gray-500 mt-2">The schema JSON will be appended to this prompt automatically.</p>
-              </div>
-              <DialogFooter>
-                <Button variant="outline" onClick={resetGeminiPrompt}>
-                  Reset to Default
-                </Button>
-                <Button onClick={handleSavePrompt}>Save Changes</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
-      </CardFooter>
-    </Card>
   );
 }

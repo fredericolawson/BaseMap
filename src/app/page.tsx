@@ -7,7 +7,6 @@ import GeminiAnalysis from '@/components/GeminiAnalysis';
 import Manager from '@/components/Manager';
 import PurgeStorage from '@/components/PurgeStorage';
 import BrokenFieldsAlert from '@/components/BrokenFieldsAlert';
-import { useSchemaActions } from '@/hooks/useSchemaActions';
 import { Schema } from '@/types/schema';
 
 export default function Home() {

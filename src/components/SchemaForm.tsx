@@ -2,7 +2,6 @@
 
 import React from 'react';
 
-import { EyeIcon, EyeOffIcon } from "lucide-react"
 import { Schema } from '../types/schema'
 
 interface SchemaFormProps {

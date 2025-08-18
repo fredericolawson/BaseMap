@@ -5,6 +5,7 @@ import {
   AirtableResponse,
   AirtableTable,
 } from "../types/schema";
+import { RelationshipType } from "../constants/fieldTypes";
 import { toast } from "sonner";
 
 const AIRTABLE_API_BASE = "https://api.airtable.com/v0/meta/bases";
@@ -52,8 +53,8 @@ export function useSchemaFetcher(initialPat: string, initialBaseId: string) {
             to: field.options.linkedTableId,
             fieldId: field.id,
             type: field.options.prefersSingleRecordLink
-              ? "oneToOne"
-              : "oneToMany",
+              ? RelationshipType.ONE_TO_ONE
+              : RelationshipType.ONE_TO_MANY,
           });
         }
       });
