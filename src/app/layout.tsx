@@ -37,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="bg-background text-foreground flex flex-col min-h-screen">
         <Header />
-        <main className="flex-grow flex py-8 px-4">{children}</main>
+        <main className="flex-grow flex py-8 px-4 md:px-8">{children}</main>
         <Footer />
         <Analytics />
         <Toaster position="bottom-center" richColors />
@@ -65,12 +65,14 @@ async function Footer() {
     <footer className="py-6 border-t border-border mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center text-sm text-muted-foreground">
-          {user && (
-            <Link href="/account" className="hover:text-foreground transition-colors">
-              {user.user?.email}
-            </Link>
+          {user?.user && (
+            <>
+              <Link href="/account" className="hover:text-foreground transition-colors">
+                {user.user?.email}
+              </Link>
+              <div className="mx-2">•</div>
+            </>
           )}
-          <div className="mx-2">•</div>
           <p>&copy; {new Date().getFullYear()} BaseMap</p>
           <div className="mx-2">•</div>
           <Link href="/security" className="hover:text-foreground transition-colors">

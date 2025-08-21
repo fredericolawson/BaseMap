@@ -83,7 +83,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-muted-foreground;
   }
   h1,
   h2,
@@ -93,10 +93,16 @@
   h6 {
     @apply text-foreground font-semibold;
   }
+  h1 {
+    @apply text-4xl mb-2;
+  }
+  p {
+    @apply text-muted-foreground text-sm;
+  }
   ul {
-    @apply list-disc list-inside;
+    @apply text-muted-foreground list-disc pl-5 space-y-2 text-sm;
   }
   ol {
-    @apply list-decimal list-inside;
+    @apply text-muted-foreground list-decimal pl-5 space-y-2 text-sm;
   }
 }
