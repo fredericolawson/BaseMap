@@ -6,6 +6,7 @@ import { Toaster } from 'sonner';
 import { createClient } from '@/lib/supabase/server';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_URL || 'http://localhost:3000'),
   title: 'BaseMap - Airtable Schema Advisor',
   description: 'Let AI analyse your schema and suggest improvements',
   icons: {
