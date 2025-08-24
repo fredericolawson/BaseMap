@@ -19,20 +19,52 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
 
   const handleSocialLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('[OAuth Debug] Starting Google OAuth login...');
+
     const supabase = createClient();
     setIsLoading(true);
     setError(null);
 
+    const redirectTo = `${window.location.origin}/auth/oauth?next=/account`;
+    console.log('[OAuth Debug] Redirect URL:', redirectTo);
+    console.log('[OAuth Debug] Window origin:', window.location.origin);
+
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      console.log('[OAuth Debug] Calling supabase.auth.signInWithOAuth...');
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/oauth?next=/account`,
+          redirectTo,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
         },
       });
 
-      if (error) throw error;
+      console.log('[OAuth Debug] OAuth response:', {
+        data,
+        error,
+        url: data?.url,
+      });
+
+      if (error) {
+        console.error('[OAuth Debug] OAuth error:', error);
+        throw error;
+      }
+
+      if (data?.url) {
+        console.log('[OAuth Debug] Redirecting to:', data.url);
+        // The redirect should happen automatically, but log if it doesn't
+        setTimeout(() => {
+          console.warn('[OAuth Debug] Still on page after 2 seconds - redirect may have failed');
+        }, 2000);
+      } else {
+        console.error('[OAuth Debug] No URL returned from OAuth');
+        throw new Error('No redirect URL received from OAuth provider');
+      }
     } catch (error: unknown) {
+      console.error('[OAuth Debug] Caught error:', error);
       setError(error instanceof Error ? error.message : 'An error occurred');
       setIsLoading(false);
     }
@@ -81,6 +113,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
             <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
               <span className="bg-card text-muted-foreground relative z-10 px-2">Or continue with</span>
             </div>
+
             <form onSubmit={handleLogin}>
               <div className="flex flex-col gap-6">
                 <div className="grid gap-2">
@@ -109,6 +142,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                 </Button>
               </div>
             </form>
+
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{' '}
               <Link href="/auth/sign-up" className="underline underline-offset-4">
