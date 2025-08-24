@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import { Analytics } from '@vercel/analytics/react';
 import Link from 'next/link';
 import { Toaster } from 'sonner';
-import { createClient } from '@/lib/supabase/server';
 import { SupabaseDebug } from '@/components/supabase-debug';
+import { Footer } from '@/components/footer';
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_URL || 'http://localhost:3000'),
@@ -57,34 +57,5 @@ function Header() {
         <p className="text-muted-foreground">Airtable Schema Analysis</p>
       </Link>
     </header>
-  );
-}
-
-async function Footer() {
-  const supabase = await createClient();
-  const { data: user } = await supabase.auth.getUser();
-
-  return (
-    <footer className="py-6 border-t border-border mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-center text-sm text-muted-foreground">
-          {user?.user ? (
-            <Link href="/account" className="hover:text-foreground transition-colors">
-              {user.user?.email}
-            </Link>
-          ) : (
-            <Link href="/auth/login" className="hover:text-foreground transition-colors">
-              Login
-            </Link>
-          )}
-          <div className="mx-2">•</div>
-          <p>&copy; {new Date().getFullYear()} BaseMap</p>
-          <div className="mx-2">•</div>
-          <Link href="/security" className="hover:text-foreground transition-colors">
-            Security
-          </Link>
-        </div>
-      </div>
-    </footer>
   );
 }
