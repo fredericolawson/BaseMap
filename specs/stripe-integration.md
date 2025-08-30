@@ -18,14 +18,17 @@ This document outlines the implementation plan for integrating Stripe payments i
 ### NPM Packages
 
 #### 1. `stripe` (v14.x)
+
 **Purpose**: Server-side Stripe SDK for Node.js
 **Usage**:
+
 - Creating checkout sessions
 - Managing customer portal sessions
 - Webhook event handling
 - Customer creation and management
 
 **Key Features Used**:
+
 - `Stripe()` constructor for initialization
 - `stripe.checkout.sessions.create()` for payment flow
 - `stripe.billingPortal.sessions.create()` for subscription management
@@ -33,24 +36,30 @@ This document outlines the implementation plan for integrating Stripe payments i
 - `stripe.customers.create()` for new customer setup
 
 #### 2. `@stripe/stripe-js` (v3.x)
+
 **Purpose**: Client-side Stripe.js loader
 **Usage**:
+
 - Loading Stripe.js asynchronously
 - Redirecting to Stripe Checkout
 - Ensuring PCI compliance
 
 **Key Features Used**:
+
 - `loadStripe()` for initializing Stripe on client
 - `stripe.redirectToCheckout()` for payment flow
 - Type definitions for TypeScript support
 
 #### 3. `@stripe/react-stripe-js` (v2.x) - Optional
+
 **Purpose**: React components for Stripe Elements
-**Usage**: 
+**Usage**:
+
 - If we need embedded payment forms in the future
 - Currently not needed for Checkout-based flow
 
 **Potential Future Use**:
+
 - `<Elements>` provider component
 - `<PaymentElement>` for embedded checkout
 - `useStripe()` and `useElements()` hooks
@@ -58,6 +67,7 @@ This document outlines the implementation plan for integrating Stripe payments i
 ### Stripe Products Configuration
 
 **BaseMap Product Details**:
+
 - Product ID: `prod_SulPdX3GzogaRv`
 - Price ID: `price_1RyvsD0e0YMbbSLn3uDqkHtX`
 - Amount: $10.00/month
@@ -67,6 +77,7 @@ This document outlines the implementation plan for integrating Stripe payments i
 ### Stripe Checkout Features
 
 **Checkout Session Configuration**:
+
 ```typescript
 {
   mode: 'subscription',
@@ -85,6 +96,7 @@ This document outlines the implementation plan for integrating Stripe payments i
 ```
 
 **Features Utilized**:
+
 - Hosted checkout page (no PCI compliance burden)
 - Automatic tax calculation (if configured)
 - SCA/3D Secure handling
@@ -94,6 +106,7 @@ This document outlines the implementation plan for integrating Stripe payments i
 ### Stripe Customer Portal Features
 
 **Portal Configuration**:
+
 - Subscription management (pause/cancel)
 - Update payment methods
 - Download invoices
@@ -130,7 +143,7 @@ Create a general-purpose view for all user subscriptions across all products:
 ```sql
 -- View for ALL user subscriptions (any product)
 CREATE OR REPLACE VIEW user_subscriptions AS
-SELECT 
+SELECT
   uc.user_id,
   uc.stripe_customer_id,
   s.id as subscription_id,
@@ -165,7 +178,7 @@ Create a filtered view specifically for BaseMap subscriptions:
 
 ```sql
 -- View specifically for BaseMap subscriptions
-CREATE OR REPLACE VIEW basemap_subscriptions AS
+CREATE OR REPLACE VIEW user_subscriptions AS
 SELECT * FROM user_subscriptions
 WHERE product_id = 'prod_SulPdX3GzogaRv';  -- Filter for BaseMap product only
 ```
@@ -186,7 +199,7 @@ CREATE POLICY "System can manage customer mappings" ON user_customers
 
 -- Grant permissions on views
 GRANT SELECT ON user_subscriptions TO authenticated;
-GRANT SELECT ON basemap_subscriptions TO authenticated;
+GRANT SELECT ON user_subscriptions TO authenticated;
 ```
 
 ## Server Actions & API Implementation
@@ -206,89 +219,85 @@ import { redirect } from 'next/navigation';
 
 export async function createCheckoutSession() {
   const supabase = await createClient();
-  
+
   // Get authenticated user
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) throw new Error('Unauthorized');
-  
+
   // Check for existing customer
-  const { data: existingCustomer } = await supabase
-    .from('user_customers')
-    .select('stripe_customer_id')
-    .eq('user_id', user.id)
-    .single();
-  
+  const { data: existingCustomer } = await supabase.from('user_customers').select('stripe_customer_id').eq('user_id', user.id).single();
+
   let customerId = existingCustomer?.stripe_customer_id;
-  
+
   // Create Stripe customer if needed
   if (!customerId) {
     const customer = await stripe.customers.create({
       email: user.email,
-      metadata: { user_id: user.id }
+      metadata: { user_id: user.id },
     });
     customerId = customer.id;
   }
-  
+
   // Create checkout session
   const session = await stripe.checkout.sessions.create({
     customer: customerId,
     mode: 'subscription',
     payment_method_types: ['card'],
-    line_items: [{
-      price: process.env.NEXT_PUBLIC_BASEMAP_PRICE_ID,
-      quantity: 1
-    }],
+    line_items: [
+      {
+        price: process.env.NEXT_PUBLIC_BASEMAP_PRICE_ID,
+        quantity: 1,
+      },
+    ],
     success_url: `${process.env.NEXT_PUBLIC_APP_URL}/account?success=true`,
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/account`,
-    metadata: { user_id: user.id }
+    metadata: { user_id: user.id },
   });
-  
+
   // Redirect to Stripe Checkout
   redirect(session.url!);
 }
 
 export async function createPortalSession() {
   const supabase = await createClient();
-  
+
   // Get authenticated user
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) throw new Error('Unauthorized');
-  
+
   // Get customer ID
-  const { data: customer } = await supabase
-    .from('user_customers')
-    .select('stripe_customer_id')
-    .eq('user_id', user.id)
-    .single();
-  
+  const { data: customer } = await supabase.from('user_customers').select('stripe_customer_id').eq('user_id', user.id).single();
+
   if (!customer?.stripe_customer_id) {
     throw new Error('No subscription found');
   }
-  
+
   // Create portal session
   const session = await stripe.billingPortal.sessions.create({
     customer: customer.stripe_customer_id,
-    return_url: `${process.env.NEXT_PUBLIC_APP_URL}/account`
+    return_url: `${process.env.NEXT_PUBLIC_APP_URL}/account`,
   });
-  
+
   // Redirect to portal
   redirect(session.url);
 }
 
 export async function getSubscriptionStatus() {
   const supabase = await createClient();
-  
+
   // Get authenticated user
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) return null;
-  
-  // Query the basemap_subscriptions view
-  const { data: subscription } = await supabase
-    .from('basemap_subscriptions')
-    .select('*')
-    .eq('user_id', user.id)
-    .single();
-  
+
+  // Query the user_subscriptions view
+  const { data: subscription } = await supabase.from('user_subscriptions').select('*').eq('user_id', user.id).single();
+
   return subscription;
 }
 ```
@@ -298,21 +307,23 @@ export async function getSubscriptionStatus() {
 **Why Keep as API Route**: Webhooks must be POST endpoints that Stripe can call, so they can't be server actions.
 
 **Functionality**:
+
 - Verify webhook signature
 - Handle checkout completion
 - Create user-customer mapping
 
 **Webhook Events Handled**:
 
-| Event | Action |
-|-------|--------|
-| `checkout.session.completed` | Create user-customer mapping in database |
+| Event                           | Action                                        |
+| ------------------------------- | --------------------------------------------- |
+| `checkout.session.completed`    | Create user-customer mapping in database      |
 | `customer.subscription.updated` | No action needed (foreign tables auto-update) |
-| `customer.subscription.deleted` | Optional: Log cancellation for analytics |
-| `invoice.payment_succeeded` | Optional: Send receipt email |
-| `invoice.payment_failed` | Optional: Send payment failure notification |
+| `customer.subscription.deleted` | Optional: Log cancellation for analytics      |
+| `invoice.payment_succeeded`     | Optional: Send receipt email                  |
+| `invoice.payment_failed`        | Optional: Send payment failure notification   |
 
 **Security**:
+
 - Verify webhook signature using `stripe.webhooks.constructEvent()`
 - Use `STRIPE_WEBHOOK_SECRET` environment variable
 - Return 400 for invalid signatures
@@ -322,14 +333,15 @@ export async function getSubscriptionStatus() {
 ### 1. `SubscriptionStatus.tsx`
 
 **Usage with Server Actions**:
+
 ```typescript
 import { getSubscriptionStatus } from '@/app/actions/stripe';
 
 export default async function SubscriptionStatus() {
   const subscription = await getSubscriptionStatus();
-  
+
   if (!subscription) return null;
-  
+
   return (
     <div className="rounded-lg border p-4">
       <h3 className="font-semibold">{subscription.product_name}</h3>
@@ -341,6 +353,7 @@ export default async function SubscriptionStatus() {
 ```
 
 **Features**:
+
 - Server component that directly calls server action
 - No client-side state management needed
 - Automatic revalidation on navigation
@@ -348,6 +361,7 @@ export default async function SubscriptionStatus() {
 ### 2. `PurchaseButton.tsx`
 
 **Usage with Server Actions**:
+
 ```typescript
 import { createCheckoutSession } from '@/app/actions/stripe';
 import { Button } from '@/components/ui/button';
@@ -364,6 +378,7 @@ export default function PurchaseButton() {
 ```
 
 **Features**:
+
 - Simple form submission to server action
 - Automatic loading state via form submission
 - Server-side redirect to Stripe Checkout
@@ -372,6 +387,7 @@ export default function PurchaseButton() {
 ### 3. `ManageSubscriptionButton.tsx`
 
 **Usage with Server Actions**:
+
 ```typescript
 import { createPortalSession } from '@/app/actions/stripe';
 import { Button } from '@/components/ui/button';
@@ -388,6 +404,7 @@ export default function ManageSubscriptionButton() {
 ```
 
 **Features**:
+
 - Direct form submission to server action
 - Server-side redirect to customer portal
 - Automatic error handling via error boundaries
@@ -404,10 +421,11 @@ interface UseSubscriptionReturn {
   refetch: () => void;
 }
 
-function useSubscription(): UseSubscriptionReturn
+function useSubscription(): UseSubscriptionReturn;
 ```
 
 **Features**:
+
 - Real-time subscription query from foreign tables
 - Automatic refetch on window focus
 - Cache with SWR or React Query
@@ -422,10 +440,11 @@ interface UseStripeCheckoutReturn {
   error: Error | null;
 }
 
-function useStripeCheckout(priceId: string): UseStripeCheckoutReturn
+function useStripeCheckout(priceId: string): UseStripeCheckoutReturn;
 ```
 
 **Features**:
+
 - Handle checkout session creation
 - Redirect to Stripe Checkout
 - Error handling
@@ -464,7 +483,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJ... # For server-side operations
 │               └── route.ts (new) - Only webhook needs API route
 ├── components/
 │   ├── subscription-status.tsx (new) - Server component
-│   ├── purchase-button.tsx (new) - Server component  
+│   ├── purchase-button.tsx (new) - Server component
 │   └── manage-subscription-button.tsx (new) - Server component
 ├── lib/
 │   ├── stripe/
@@ -477,6 +496,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJ... # For server-side operations
 ```
 
 **Note**: With server actions, we've eliminated the need for:
+
 - Multiple API route files (replaced by single `actions/stripe.ts`)
 - Client-side Stripe initialization (`stripe/client.ts` not needed)
 - Custom hooks for API calls (server components handle data fetching)
@@ -485,30 +505,35 @@ SUPABASE_SERVICE_ROLE_KEY=eyJ... # For server-side operations
 ## Implementation Timeline
 
 ### Phase 1: Infrastructure Setup (Day 1)
+
 - [ ] Create basemap schema and tables
 - [ ] Set up environment variables
 - [ ] Install Stripe packages
 - [ ] Create Stripe lib files
 
 ### Phase 2: Backend Implementation (Day 2)
+
 - [ ] Implement checkout session API
 - [ ] Implement portal session API
 - [ ] Set up webhook handler
 - [ ] Test with Stripe CLI
 
 ### Phase 3: Frontend Components (Day 3)
+
 - [ ] Build SubscriptionStatus component
 - [ ] Build PurchaseButton component
 - [ ] Build ManageSubscriptionButton component
 - [ ] Create custom hooks
 
 ### Phase 4: Integration (Day 4)
+
 - [ ] Integrate with account page
 - [ ] Add loading states
 - [ ] Implement error handling
 - [ ] Add success notifications
 
 ### Phase 5: Testing & Deployment (Day 5)
+
 - [ ] Test full payment flow in test mode
 - [ ] Test subscription management
 - [ ] Test webhook reliability
@@ -540,11 +565,11 @@ SUPABASE_SERVICE_ROLE_KEY=eyJ... # For server-side operations
 
 ### Stripe Test Cards
 
-| Scenario | Card Number | 
-|----------|------------|
-| Success | 4242 4242 4242 4242 |
-| Decline | 4000 0000 0000 0002 |
-| 3D Secure | 4000 0025 0000 3155 |
+| Scenario           | Card Number         |
+| ------------------ | ------------------- |
+| Success            | 4242 4242 4242 4242 |
+| Decline            | 4000 0000 0000 0002 |
+| 3D Secure          | 4000 0025 0000 3155 |
 | Insufficient Funds | 4000 0000 0000 9995 |
 
 ## Security Considerations

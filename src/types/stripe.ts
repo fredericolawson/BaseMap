@@ -1,4 +1,4 @@
-// Types for subscription data from the basemap_subscriptions view
+// Types for subscription data from the user_subscriptions view
 export interface SubscriptionData {
   subscription_id: string;
   status: 'active' | 'trialing' | 'canceled' | 'incomplete' | 'incomplete_expired' | 'past_due' | 'unpaid';
