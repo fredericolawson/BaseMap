@@ -23,7 +23,7 @@ export function Footer() {
           <p>&copy; {new Date().getFullYear()} BaseMap</p>
           <div className="mx-2">•</div>
           <Link href="/security" className="hover:text-foreground transition-colors">
-            Security
+            Privacy & Security
           </Link>
         </div>
       </div>
